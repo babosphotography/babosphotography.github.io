@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Babos Photography - Thiès</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+/* ============ VARIABLES ============ */
+:root {
+  --navy: #0a2463;
+  --blue: #1e5bcc;
+  --sky: #4a90e2;
+  --pale: #ddeeff;
+  --white: #ffffff;
+  --off: #f7faff;
+  --gold: #c9a96e;
+  --txt: #1a2a4a;
+  --muted: #6b82a0;
+  --bg-dark: #0a1128;
+  --card-dark: #141f3d;
+  --bg: #ffffff;
+  --text: #1a2a4a;
+  --card: #f7faff;
+}
+
+[data-theme="dark"] {
+  --bg: #0a1128;
+  --text: #ffffff;
+  --card: #141f3d;
+  --off: #141f3d;
+  --white: #0a1128;
+  --navy: #1e3a8a;
+}
+
+/* ============ RESET ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Jost',sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  overflow-x:hidden;
+  transition:background .3s,color .3s;
+}
+
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--card)}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:4px}
+
+/* ============ NAVIGATION ============ */
+#mainNav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 40px;
+  transition:all .4s;
+  background:transparent;
+}
+#mainNav.scrolled{
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(15px);
+  box-shadow:0 2px 30px rgba(0,0,0,.08);
+  padding:14px 40px;
+}
+[data-theme="dark"] #mainNav.scrolled{background:rgba(10,17,40,.95)}
+
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem;font-weight:600;
+  color:#fff;text-decoration:none;
+  letter-spacing:3px;
+  transition:color .3s;
+}
+#mainNav.scrolled .nav-logo{color:var(--navy)}
+[data-theme="dark"] #mainNav.scrolled .nav-logo{color:#fff}
+
+.nav-links{display:flex;gap:30px;list-style:none;align-items:center}
+.nav-links a{
+  color:rgba(255,255,255,.85);text-decoration:none;
+  font-size:.82rem;font-weight:500;
+  letter-spacing:2px;text-transform:uppercase;
+  transition:color .3s;
+}
+#mainNav.scrolled .nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--gold)}
+
+.nav-actions{display:flex;gap:12px;align-items:center}
+
+.btn-nav{
+  padding:10px 20px;border-radius:50px;
+  font-size:.78rem;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  text-decoration:none;cursor:pointer;
+  transition:all .3s;border:none;
+  font-family:'Jost',sans-serif;
+}
+.btn-nav.outline{
+  background:transparent;
+  border:1.5px solid rgba(255,255,255,.4);
+  color:#fff;
+}
+.btn-nav.outline:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+.btn-nav.filled{background:var(--gold);color:var(--navy)}
+.btn-nav.filled:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(201,169,110,.4)}
+
+.btn-theme{
+  width:38px;height:38px;border-radius:50%;
+  background:rgba(255,255,255,.1);
+  border:1.5px solid rgba(255,255,255,.2);
+  color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;transition:all .3s;
+}
+.btn-theme:hover{background:rgba(255,255,255,.2)}
+
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1100}
+.burger span{width:25px;height:2px;background:#fff;transition:.3s}
+#mainNav.scrolled .burger span{background:var(--navy)}
+
+@media(max-width:900px){
+  .nav-links{display:none}
+  .burger{display:flex}
+  #mainNav{padding:16px 20px}
+}
+
+.mob-menu{
+  position:fixed;inset:0;z-index:1050;
+  background:var(--navy);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:28px;
+  transform:translateX(100%);
+  transition:transform .5s cubic-bezier(.22,1,.36,1);
+}
+.mob-menu.open{transform:translateX(0)}
+.mob-menu a{font-family:'Cormorant Garamond',serif;font-size:2rem;color:#fff;text-decoration:none;opacity:.9;transition:opacity .3s}
+.mob-menu a:hover{opacity:1;color:var(--gold)}
+.mob-close{position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:1.8rem;cursor:pointer}
+
+/* ============ HERO ============ */
+#hero{
+  min-height:100vh;
+  background:linear-gradient(160deg,var(--navy),#1a3a8f,var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;position:relative;overflow:hidden;
+  padding:120px 20px 80px;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  opacity:.15;
+  transition:background-image .5s;
+}
+.hero-content{position:relative;z-index:2}
+.hero-tag{
+  font-size:.8rem;letter-spacing:6px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+  animation:fadeUp .8s .2s both;
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,8vw,7rem);font-weight:300;
+  color:#fff;line-height:1.1;
+  animation:fadeUp .9s .4s both;
+}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-subtitle{
+  margin-top:16px;font-size:1.1rem;font-weight:300;
+  color:rgba(255,255,255,.7);letter-spacing:2px;
+  animation:fadeUp .9s .6s both;
+}
+.hero-buttons{
+  margin-top:40px;display:flex;gap:16px;
+  justify-content:center;flex-wrap:wrap;
+  animation:fadeUp .9s .8s both;
+}
+.btn-hero{
+  padding:16px 36px;border-radius:50px;
+  font-size:.85rem;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;transition:all .3s;
+  cursor:pointer;border:none;font-family:'Jost',sans-serif;
+}
+.btn-hero.primary{background:var(--gold);color:var(--navy)}
+.btn-hero.primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(201,169,110,.5)}
+.btn-hero.secondary{background:transparent;border:1.5px solid rgba(255,255,255,.4);color:#fff}
+.btn-hero.secondary:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+
+/* ============ SECTIONS ============ */
+.section{padding:100px 40px;transition:background .3s}
+@media(max-width:768px){.section{padding:60px 20px}}
+
+.section-tag{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;text-align:center}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:300;text-align:center;line-height:1.15;color:var(--navy)}
+[data-theme="dark"] .section-title{color:#fff}
+.section-title em{font-style:italic}
+.section-line{width:60px;height:2px;background:var(--gold);margin:20px auto 40px}
+
+/* ============ ABOUT ============ */
+#about{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:60px;align-items:center;
+  background:var(--off);
+}
+@media(max-width:900px){#about{grid-template-columns:1fr}}
+.about-image{position:relative;border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.15)}
+.about-image img{width:100%;height:auto;display:block}
+.about-content p{font-size:1rem;line-height:1.9;color:var(--muted);margin-bottom:14px}
+.stats{display:flex;gap:40px;margin-top:24px;flex-wrap:wrap}
+.stat-item{text-align:center}
+.stat-number{font-family:'Cormorant Garamond',serif;font-size:2.6rem;color:var(--blue)}
+.stat-label{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* ============ SERVICES ============ */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:40px}
+.service-card{
+  background:var(--off);border-radius:16px;padding:36px 24px;
+  text-align:center;border:1.5px solid #e0ebf8;
+  transition:all .3s;
+}
+[data-theme="dark"] .service-card{border-color:rgba(255,255,255,.1)}
+.service-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.1)}
+.service-icon{font-size:2.5rem;margin-bottom:16px}
+.service-card h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:8px}
+.service-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* ============ GALLERY ============ */
+#gallery{background:var(--navy);text-align:center}
+#gallery .section-title{color:#fff}
+#gallery .section-tag{color:var(--gold)}
+
+.album-tabs{display:flex;justify-content:center;gap:8px;margin:30px 0;flex-wrap:wrap}
+.album-tab{
+  padding:8px 20px;border-radius:50px;
+  font-size:.75rem;letter-spacing:2px;
+  text-transform:uppercase;cursor:pointer;
+  transition:all .3s;
+  border:1.5px solid rgba(255,255,255,.25);
+  color:rgba(255,255,255,.7);
+  background:transparent;
+  font-family:'Jost',sans-serif;
+}
+.album-tab.active,.album-tab:hover{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+
+.search-bar{max-width:400px;margin:0 auto 20px;position:relative}
+.search-bar input{
+  width:100%;padding:12px 40px 12px 20px;
+  border-radius:50px;border:1.5px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08);color:#fff;
+  font-family:'Jost',sans-serif;font-size:.9rem;
+  outline:none;transition:border-color .3s;
+}
+.search-bar input:focus{border-color:var(--gold)}
+.search-bar i{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4)}
+
+.gallery-grid{columns:3;column-gap:16px}
+@media(max-width:900px){.gallery-grid{columns:2}}
+@media(max-width:500px){.gallery-grid{columns:1}}
+
+.gallery-item{
+  break-inside:avoid;margin-bottom:16px;
+  border-radius:10px;overflow:hidden;
+  cursor:pointer;position:relative;
+  transition:transform .3s;
+}
+.gallery-item:hover{transform:scale(1.02)}
+.gallery-item img{width:100%;display:block}
+.gallery-item-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.7),transparent);
+  opacity:0;transition:opacity .3s;
+  display:flex;align-items:flex-end;padding:16px;
+}
+.gallery-item:hover .gallery-item-overlay{opacity:1}
+.gallery-item-overlay span{color:#fff;font-size:.8rem}
+
+.lightbox{
+  display:none;position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,.95);
+  align-items:center;justify-content:center;
+}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:85vh;border-radius:8px}
+.lightbox-close{position:absolute;top:20px;right:30px;color:#fff;font-size:2rem;cursor:pointer;background:none;border:none}
+
+/* ============ BOOKING ============ */
+#booking{background:linear-gradient(135deg,var(--off),var(--pale))}
+.booking-form{
+  max-width:650px;margin:40px auto 0;
+  background:#fff;border-radius:20px;
+  padding:40px;box-shadow:0 20px 60px rgba(0,0,0,.08);
+}
+[data-theme="dark"] .booking-form{background:var(--card-dark)}
+
+.form-group{margin-bottom:18px}
+.form-group label{display:block;margin-bottom:6px;font-size:.82rem;font-weight:500;color:var(--navy)}
+[data-theme="dark"] .form-group label{color:#fff}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:12px 16px;
+  border:1.8px solid #e0e8f5;border-radius:10px;
+  font-family:'Jost',sans-serif;font-size:.9rem;
+  outline:none;transition:border-color .3s;
+}
+[data-theme="dark"] .form-group input,[data-theme="dark"] .form-group select,[data-theme="dark"] .form-group textarea{
+  background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.15);color:#fff;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:500px){.form-row{grid-template-columns:1fr}}
+
+.btn-submit{
+  width:100%;padding:16px;
+  background:linear-gradient(120deg,var(--navy),var(--blue));
+  color:#fff;border:none;border-radius:12px;
+  font-family:'Jost',sans-serif;font-size:.95rem;
+  font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all .3s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(30,91,204,.4)}
+
+/* ============ LOCATION ============ */
+#location{background:var(--off);text-align:center}
+.map-container{max-width:800px;margin:30px auto 0;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.1)}
+.map-container iframe{width:100%;height:400px;border:none}
+.location-info{margin-top:20px;text-align:center;color:var(--muted)}
+
+/* ============ CONTACT ============ */
+#contact{
+  background:var(--navy);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:60px;align-items:start;
+}
+@media(max-width:900px){#contact{grid-template-columns:1fr}}
+#contact .section-title{color:#fff;text-align:left}
+#contact .section-tag{text-align:left}
+
+.contact-details{display:flex;flex-direction:column;gap:20px;margin-top:30px}
+.contact-item{display:flex;align-items:center;gap:14px}
+.contact-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+}
+.contact-text small{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);display:block;margin-bottom:2px}
+.contact-text span{color:#fff;font-size:.9rem}
+
+.contact-form-box{
+  background:rgba(255,255,255,.06);
+  border-radius:20px;padding:36px;
+  border:1px solid rgba(255,255,255,.1);
+}
+
+/* ============ FOOTER ============ */
+footer{
+  background:#06163a;color:rgba(255,255,255,.5);
+  text-align:center;padding:40px 20px;
+}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#fff;letter-spacing:3px;display:block;margin-bottom:16px}
+.social-links{display:flex;justify-content:center;gap:16px;margin-bottom:16px}
+.social-links a{color:rgba(255,255,255,.4);font-size:1.2rem;transition:color .3s;text-decoration:none}
+.social-links a:hover{color:var(--gold)}
+
+/* ============ ADMIN BUTTON ============ */
+#admin-btn{
+  position:fixed;bottom:24px;right:24px;
+  width:50px;height:50px;border-radius:50%;
+  background:var(--navy);color:#fff;
+  border:none;font-size:1.2rem;
+  cursor:pointer;z-index:500;
+  box-shadow:0 6px 24px rgba(10,36,99,.4);
+  transition:transform .2s;
+  display:flex;align-items:center;justify-content:center;
+}
+#admin-btn:hover{transform:scale(1.1)}
+
+/* ============ ADMIN PANEL ============ */
+.admin-overlay{
+  display:none;position:fixed;inset:0;
+  z-index:3000;background:rgba(5,15,40,.97);
+  backdrop-filter:blur(10px);
+  flex-direction:column;align-items:center;
+  padding:30px 20px;overflow-y:auto;
+}
+.admin-overlay.open{display:flex}
+
+.admin-container{width:100%;max-width:1000px}
+
+.admin-header{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  margin-bottom:30px;flex-wrap:wrap;gap:12px;
+}
+.admin-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#fff}
+
+/* LOGIN */
+.admin-login{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:50px;
+  max-width:420px;margin:60px auto 0;
+  text-align:center;
+}
+.admin-login h3{color:#fff;font-size:1.6rem;margin-bottom:8px}
+.admin-login p{color:rgba(255,255,255,.5);margin-bottom:24px;font-size:.85rem}
+.admin-login input{
+  width:100%;padding:14px 18px;margin-bottom:12px;
+  background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(255,255,255,.15);
+  border-radius:10px;color:#fff;
+  font-family:'Jost',sans-serif;font-size:.9rem;
+  outline:none;transition:border-color .3s;
+}
+.admin-login input:focus{border-color:var(--sky)}
+.admin-login button{
+  width:100%;padding:14px;margin-top:8px;
+  background:linear-gradient(120deg,var(--navy),var(--blue));
+  color:#fff;border:none;border-radius:10px;
+  font-family:'Jost',sans-serif;font-size:.9rem;
+  font-weight:600;cursor:pointer;
+  transition:all .3s;
+}
+.admin-login button:hover{transform:translateY(-2px)}
+.admin-login .error{color:#ff7b7b;font-size:.8rem;margin-top:10px;display:none}
+
+/* TABS */
+.admin-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.admin-tab{
+  padding:10px 20px;border-radius:50px;
+  font-size:.78rem;letter-spacing:1px;
+  cursor:pointer;transition:all .3s;
+  border:1.5px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.5);
+  background:transparent;
+  font-family:'Jost',sans-serif;
+}
+.admin-tab.active{background:linear-gradient(120deg,var(--navy),var(--blue));border-color:transparent;color:#fff}
+
+.admin-tab-content{display:none}
+.admin-tab-content.active{display:block}
+
+/* STATS */
+.admin-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+@media(max-width:600px){.admin-stats{grid-template-columns:1fr 1fr}}
+
+.admin-stat{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:22px;text-align:center;
+}
+.admin-stat .value{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--gold)}
+.admin-stat .label{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px}
+
+/* TABLES */
+.admin-table{background:rgba(255,255,255,.04);border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.table-header{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr 1fr;padding:14px 18px;background:rgba(255,255,255,.05)}
+.table-header span{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.table-row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr 1fr;padding:14px 18px;border-top:1px solid rgba(255,255,255,.04);align-items:center}
+.table-row span{font-size:.8rem;color:rgba(255,255,255,.7)}
+
+/* CARDS */
+.admin-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;padding:24px;
+  margin-bottom:20px;
+}
+.admin-card h4{font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+
+.admin-input{
+  width:100%;padding:11px 14px;margin-bottom:10px;
+  background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(255,255,255,.12);
+  border-radius:8px;color:#fff;
+  font-family:'Jost',sans-serif;font-size:.85rem;
+  outline:none;transition:border-color .2s;
+}
+.admin-input:focus{border-color:var(--sky)}
+.admin-input::placeholder{color:rgba(255,255,255,.25)}
+
+.admin-textarea{
+  width:100%;min-height:80px;padding:11px 14px;
+  background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(255,255,255,.12);
+  border-radius:8px;color:#fff;
+  font-family:'Jost',sans-serif;font-size:.85rem;
+  outline:none;resize:vertical;
+}
+
+.btn-admin{
+  padding:10px 22px;border-radius:50px;
+  font-size:.78rem;font-weight:600;
+  letter-spacing:1px;cursor:pointer;
+  transition:all .3s;border:none;
+  font-family:'Jost',sans-serif;
+}
+.btn-admin.primary{background:linear-gradient(120deg,var(--navy),var(--blue));color:#fff}
+.btn-admin.primary:hover{opacity:.9}
+.btn-admin.danger{background:rgba(255,80,80,.15);color:#ff7b7b;border:1px solid rgba(255,80,80,.25)}
+.btn-admin.success{background:rgba(201,169,110,.15);color:var(--gold);border:1px solid rgba(201,169,110,.3)}
+.btn-admin.back-btn{
+  background:rgba(74,144,226,.15);
+  color:var(--sky);
+  border:1.5px solid rgba(74,144,226,.3);
+  display:flex;align-items:center;gap:8px;
+  font-size:.8rem;
+}
+.btn-admin.back-btn:hover{
+  background:rgba(74,144,226,.25);
+  transform:translateY(-1px);
+}
+
+/* Upload zone */
+.upload-zone{
+  border:2px dashed rgba(255,255,255,.18);
+  border-radius:14px;padding:36px;
+  text-align:center;cursor:pointer;
+  transition:all .3s;margin-bottom:14px;
+}
+.upload-zone:hover{border-color:var(--gold);background:rgba(201,169,110,.05)}
+.upload-zone i{font-size:2.5rem;color:rgba(255,255,255,.3);margin-bottom:10px}
+.upload-zone p{color:rgba(255,255,255,.5);font-size:.85rem}
+
+.btn-logout{
+  display:block;width:100%;padding:14px;margin-top:20px;
+  background:rgba(255,80,80,.1);
+  color:#ff7b7b;border:1.5px solid rgba(255,80,80,.2);
+  border-radius:12px;cursor:pointer;
+  font-family:'Jost',sans-serif;font-size:.88rem;
+  letter-spacing:1px;transition:all .3s;
+}
+.btn-logout:hover{background:rgba(255,80,80,.2);transform:translateY(-1px)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav id="mainNav">
+  <a href="#hero" class="nav-logo">BABOS</a>
+  <ul class="nav-links">
+    <li><a href="#about">À Propos</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Galerie</a></li>
+    <li><a href="#booking">Réserver</a></li>
+    <li><a href="#location">Localisation</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-theme" onclick="toggleTheme()" title="Mode sombre/clair">
+      <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+    <a href="#booking" class="btn-nav filled">Réserver</a>
+  </div>
+  <div class="burger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" onclick="toggleMobileMenu()">✕</button>
+  <a href="#about" onclick="toggleMobileMenu()">À Propos</a>
+  <a href="#services" onclick="toggleMobileMenu()">Services</a>
+  <a href="#gallery" onclick="toggleMobileMenu()">Galerie</a>
+  <a href="#booking" onclick="toggleMobileMenu()">Réserver</a>
+  <a href="#location" onclick="toggleMobileMenu()">Localisation</a>
+  <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-content">
+    <p class="hero-tag" id="heroLocation">📍 Studio Professionnel · Thiès</p>
+    <h1 class="hero-title">Babos<br><em>Photography</em></h1>
+    <p class="hero-subtitle" id="heroTagline">Capturer l'instant. Révéler l'essence.</p>
+    <div class="hero-buttons">
+      <a href="#booking" class="btn-hero primary">Réserver une séance</a>
+      <a href="#gallery" class="btn-hero secondary">Voir la galerie</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="section">
+  <div class="about-image reveal">
+    <img id="aboutImg" src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=600&q=80" alt="Studio Babos"/>
+  </div>
+  <div class="about-content reveal">
+    <p class="section-tag" style="text-align:left">Mon histoire</p>
+    <h2 class="section-title" style="text-align:left">La photographie est <em>ma passion</em></h2>
+    <div class="section-line" style="margin:20px 0 30px"></div>
+    <div id="aboutText">
+      <p>Bienvenue chez Babos Photography. Photographe professionnel basé à Thiès, spécialisé dans les portraits de studio, la photographie familiale et les shootings corporate.</p>
+      <p>Des années d'expérience et une passion sans limites pour l'image au service de vos plus beaux souvenirs.</p>
+    </div>
+    <div class="stats">
+      <div class="stat-item"><div class="stat-number" id="statYears">8+</div><div class="stat-label">Années d'exp.</div></div>
+      <div class="stat-item"><div class="stat-number" id="statClients">500+</div><div class="stat-label">Clients</div></div>
+      <div class="stat-item"><div class="stat-number" id="statPhotos">12k+</div><div class="stat-label">Photos livrées</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section id="services" class="section">
+  <p class="section-tag reveal">Ce que je propose</p>
+  <h2 class="section-title reveal">Mes <em>Services</em></h2>
+  <div class="section-line reveal"></div>
+  <div class="services-grid" id="servicesGrid"></div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery" class="section">
+  <p class="section-tag reveal">Mon travail</p>
+  <h2 class="section-title reveal">Galerie <em>Photos</em></h2>
+  <div class="section-line reveal"></div>
+  <div class="album-tabs reveal" id="albumTabs"></div>
+  <div class="search-bar reveal">
+    <input type="text" id="gallerySearch" placeholder="🔍 Rechercher une photo..." oninput="filterGallery()"/>
+    <i class="fas fa-search"></i>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">✕</button>
+  <img id="lightboxImg" src="" alt=""/>
+</div>
+
+<!-- ============ BOOKING ============ -->
+<section id="booking" class="section">
+  <p class="section-tag reveal">Planifions ensemble</p>
+  <h2 class="section-title reveal">Réserver une <em>Séance</em></h2>
+  <div class="section-line reveal"></div>
+  <div class="booking-form reveal" id="bookingFormContainer">
+    <div class="form-row">
+      <div class="form-group"><label>Prénom</label><input type="text" id="b-prenom" placeholder="Votre prénom" required/></div>
+      <div class="form-group"><label>Nom</label><input type="text" id="b-nom" placeholder="Votre nom" required/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>📞 Téléphone</label><input type="tel" id="b-tel" placeholder="+221 77 000 00 00" required/></div>
+      <div class="form-group"><label>📧 Email</label><input type="email" id="b-email" placeholder="votre@email.com" required/></div>
+    </div>
+    <div class="form-group"><label>📍 Adresse</label><input type="text" id="b-adresse" placeholder="Votre adresse"/></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>👥 Type de photos</label>
+        <select id="b-phototype"><option value="">Choisir</option><option value="individuel">Individuel</option><option value="collectif">Collectif</option></select>
+      </div>
+      <div class="form-group">
+        <label>🔢 Nombre de photos</label>
+        <input type="number" id="b-nbphotos" placeholder="Ex: 15" min="1"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>📅 Date souhaitée</label><input type="date" id="b-date" required/></div>
+      <div class="form-group"><label>🕐 Créneau</label>
+        <select id="b-time">
+          <option value="">Choisir</option>
+          <option>09h00 – 11h00</option><option>11h00 – 13h00</option>
+          <option>14h00 – 16h00</option><option>16h00 – 18h00</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>💬 Message</label><textarea id="b-msg" rows="3" placeholder="Vos demandes particulières..."></textarea></div>
+    <button class="btn-submit" onclick="submitBooking()"><i class="fas fa-camera"></i> Confirmer ma Réservation</button>
+  </div>
+  <div id="bookingSuccess" style="display:none;text-align:center;padding:40px;animation:fadeUp .5s">
+    <div style="font-size:4rem;color:var(--gold);margin-bottom:16px">🎉</div>
+    <h3 style="font-size:1.8rem;color:var(--navy);margin-bottom:12px">Réservation envoyée !</h3>
+    <p style="color:var(--muted)">Tous les administrateurs ont été notifiés. Nous vous contacterons dans les 24 heures.</p>
+    <button class="btn-hero primary" onclick="resetBooking()" style="margin-top:20px">Nouvelle réservation</button>
+  </div>
+</section>
+
+<!-- ============ LOCATION ============ -->
+<section id="location" class="section">
+  <p class="section-tag reveal">Où nous trouver</p>
+  <h2 class="section-title reveal">Notre <em>Localisation</em></h2>
+  <div class="section-line reveal"></div>
+  <p style="text-align:center;color:var(--muted);margin-bottom:20px" id="locationAddressText">Studio Babos Photography, Thiès, Sénégal</p>
+  <div class="map-container reveal" id="mapContainer">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d61626.123456789!2d-16.926!3d14.789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTTCsDQ3JzIwLjQiTiAxNsKwNTUnMzMuNiJX!5e0!3m2!1sfr!2ssn!4v1234567890" allowfullscreen="" loading="lazy"></iframe>
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:12px" id="locationHours">🕐 Lun–Sam : 9h00 – 18h00</p>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="section">
+  <div class="reveal">
+    <p class="section-tag">Parlons-en</p>
+    <h2 class="section-title">Contactez-<em>nous</em></h2>
+    <div class="section-line" style="margin:20px 0 30px"></div>
+    <div class="contact-details">
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div class="contact-text"><small>Adresse</small><span id="contactAddress">Studio Babos, Thiès, Sénégal</span></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+        <div class="contact-text"><small>Téléphone</small><span id="contactPhone">+221 78 103 90 65</span></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+        <div class="contact-text"><small>Email</small><span id="contactEmail">babosphoto@gmail.com</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="contact-form-box reveal">
+    <div class="form-group"><label style="color:rgba(255,255,255,.7)">Votre nom</label><input type="text" id="c-nom" placeholder="Nom complet" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:#fff"/></div>
+    <div class="form-group"><label style="color:rgba(255,255,255,.7)">Email</label><input type="email" id="c-email" placeholder="votre@email.com" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:#fff"/></div>
+    <div class="form-group"><label style="color:rgba(255,255,255,.7)">Message</label><textarea id="c-msg" rows="3" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:#fff;min-height:100px"></textarea></div>
+    <button class="btn-submit" onclick="sendContactMessage()"><i class="fas fa-paper-plane"></i> Envoyer</button>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <span class="footer-logo" id="footerLogo">BABOS PHOTOGRAPHY</span>
+  <div class="social-links" id="socialLinks"></div>
+  <p id="footerCopy">© 2025 Babos Photography · Thiès, Sénégal</p>
+</footer>
+
+<!-- ============ ADMIN BUTTON ============ -->
+<button id="admin-btn" onclick="openAdminPanel()" title="Espace Admin">⚙️</button>
+
+<!-- ============ ADMIN PANEL ============ -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-container">
+    
+    <!-- LOGIN -->
+    <div id="adminLoginScreen" class="admin-login">
+      <h3>🔐 Espace Admin</h3>
+      <p>Accès réservé</p>
+      <input type="text" id="adminUser" placeholder="Nom d'utilisateur"/>
+      <input type="password" id="adminPass" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')adminLogin()"/>
+      <button onclick="adminLogin()">Se connecter</button>
+      <div class="error" id="adminError">❌ Identifiants incorrects</div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="adminDashboard" style="display:none">
+      <div class="admin-header">
+        <h2 class="admin-title">⚙️ Dashboard Admin</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-admin back-btn" onclick="goToHomePage()">
+            <i class="fas fa-arrow-left"></i> Retour au site
+          </button>
+          <button class="btn-admin back-btn" onclick="goToHomePage()" style="background:rgba(201,169,110,.15);color:var(--gold);border-color:rgba(201,169,110,.3)">
+            <i class="fas fa-home"></i> Accueil
+          </button>
+          <button class="btn-admin danger" onclick="adminLogout()">🚪 Déconnexion</button>
+          <button class="btn-admin danger" onclick="closeAdminPanel()">✕ Fermer</button>
+        </div>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('dashboard',this)">📊 Dashboard</button>
+        <button class="admin-tab" onclick="switchAdminTab('reservations',this)">📋 Réservations</button>
+        <button class="admin-tab" onclick="switchAdminTab('gallery',this)">🖼️ Galerie</button>
+        <button class="admin-tab" onclick="switchAdminTab('content',this)">📝 Contenu</button>
+        <button class="admin-tab" onclick="switchAdminTab('admins',this)">👥 Admins</button>
+        <button class="admin-tab" onclick="switchAdminTab('profile',this)">🔑 Mon Profil</button>
+      </div>
+
+      <!-- Dashboard -->
+      <div class="admin-tab-content active" id="tab-dashboard">
+        <div class="admin-stats">
+          <div class="admin-stat"><div class="value" id="dash-reservations">0</div><div class="label">Réservations</div></div>
+          <div class="admin-stat"><div class="value" id="dash-photos">0</div><div class="label">Photos</div></div>
+          <div class="admin-stat"><div class="value" id="dash-albums">0</div><div class="label">Albums</div></div>
+        </div>
+        <div class="admin-card">
+          <h4>📈 Statistiques</h4>
+          <p style="color:rgba(255,255,255,.5)">Nouvelles réservations ce mois : <strong id="dash-new-month" style="color:var(--gold)">0</strong></p>
+          <p style="color:rgba(255,255,255,.5)">Total visiteurs (session) : <strong style="color:var(--gold)" id="dash-visitors">1</strong></p>
+          <p style="color:rgba(255,255,255,.5)">Nombre d'admins : <strong style="color:var(--gold)" id="dash-admin-count">1</strong></p>
+        </div>
+        <button class="btn-admin back-btn" onclick="goToHomePage()" style="width:100%;padding:14px;justify-content:center;margin-top:10px">
+          <i class="fas fa-arrow-left"></i> Retourner à l'accueil du site
+        </button>
+      </div>
+
+      <!-- Reservations -->
+      <div class="admin-tab-content" id="tab-reservations">
+        <div class="admin-table">
+          <div class="table-header">
+            <span>Client</span><span>Téléphone</span><span>Type</span><span>Date</span><span>Nb Photos</span><span>Action</span>
+          </div>
+          <div id="reservationsList"></div>
+        </div>
+        <button class="btn-admin danger" style="margin-top:14px;width:100%" onclick="clearAllReservations()">🗑️ Vider toutes les réservations</button>
+      </div>
+
+      <!-- Gallery Admin -->
+      <div class="admin-tab-content" id="tab-gallery">
+        <div class="admin-card">
+          <h4>📁 Gérer les Albums</h4>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="albumListAdmin"></div>
+          <div style="display:flex;gap:8px">
+            <input class="admin-input" id="newAlbumName" placeholder="Nouvel album" style="flex:1"/>
+            <button class="btn-admin primary" onclick="createAlbum()">➕ Créer</button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h4>📸 Ajouter des Photos</h4>
+          <div class="upload-zone" onclick="document.getElementById('photoInput').click()">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Cliquez ou glissez vos photos ici</p>
+            <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)"/>
+          </div>
+          <div id="photoPreview" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px"></div>
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <select id="photoAlbum" class="admin-input" style="flex:1"></select>
+            <input class="admin-input" id="photoCaption" placeholder="Légende" style="flex:2"/>
+          </div>
+          <button class="btn-admin primary" onclick="savePhotos()" style="width:100%">✅ Publier les photos</button>
+        </div>
+
+        <div class="admin-card">
+          <h4>🖼️ Photos existantes (<span id="photoCountAdmin">0</span>)</h4>
+          <div id="adminPhotoGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px"></div>
+        </div>
+      </div>
+
+      <!-- Content Editor -->
+      <div class="admin-tab-content" id="tab-content">
+        <div class="admin-card">
+          <h4>🖼️ Image d'arrière-plan (Hero)</h4>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">URL de l'image</label>
+          <input class="admin-input" id="edit-heroBg" placeholder="https://images.unsplash.com/..."/>
+          <small style="color:rgba(255,255,255,.3)">Utilisez Unsplash, ImgBB ou autre service d'images</small>
+        </div>
+        <div class="admin-card">
+          <h4>🏠 Page d'accueil</h4>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Localisation Hero</label>
+          <input class="admin-input" id="edit-heroLocation"/>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Slogan</label>
+          <input class="admin-input" id="edit-heroTagline"/>
+        </div>
+        <div class="admin-card">
+          <h4>👤 À Propos</h4>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Texte (HTML accepté)</label>
+          <textarea class="admin-textarea" id="edit-aboutText" rows="4"></textarea>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Image À Propos (URL)</label>
+          <input class="admin-input" id="edit-aboutImg"/>
+        </div>
+        <div class="admin-card">
+          <h4>📞 Coordonnées</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div><label style="color:rgba(255,255,255,.5);font-size:.75rem">Téléphone</label><input class="admin-input" id="edit-phone"/></div>
+            <div><label style="color:rgba(255,255,255,.5);font-size:.75rem">Email</label><input class="admin-input" id="edit-email"/></div>
+          </div>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Adresse</label>
+          <input class="admin-input" id="edit-address"/>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Horaires</label>
+          <input class="admin-input" id="edit-hours"/>
+        </div>
+        <button class="btn-admin primary" onclick="saveAllContent()" style="width:100%;padding:14px">💾 Sauvegarder tout</button>
+      </div>
+
+      <!-- Admins Management -->
+      <div class="admin-tab-content" id="tab-admins">
+        <div class="admin-card">
+          <h4>➕ Ajouter un Admin</h4>
+          <p style="color:rgba(255,255,255,.4);font-size:.78rem;margin-bottom:12px">Les nouveaux admins recevront les notifications de réservation par email.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <input class="admin-input" id="newAdminName" placeholder="Nom complet"/>
+            <input class="admin-input" id="newAdminUser" placeholder="Username"/>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <input class="admin-input" id="newAdminEmail" type="email" placeholder="Email (pour notifications)"/>
+            <input class="admin-input" id="newAdminPass" type="password" placeholder="Mot de passe"/>
+          </div>
+          <button class="btn-admin primary" onclick="addNewAdmin()" style="width:100%">✅ Créer l'admin</button>
+          <div id="adminFormMsg" style="display:none;margin-top:8px;text-align:center;font-size:.8rem"></div>
+        </div>
+        <div class="admin-card">
+          <h4>👥 Administrateurs actuels</h4>
+          <div id="adminsList"></div>
+        </div>
+      </div>
+
+      <!-- Profile -->
+      <div class="admin-tab-content" id="tab-profile">
+        <div class="admin-card">
+          <h4>🔑 Modifier mes informations</h4>
+          <p style="color:rgba(255,255,255,.5);font-size:.8rem;margin-bottom:16px">
+            Connecté en tant que : <strong id="profileCurrentUser" style="color:var(--gold)"></strong>
+          </p>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Nom complet</label>
+          <input class="admin-input" id="profileName" placeholder="Votre nom"/>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Nom d'utilisateur</label>
+          <input class="admin-input" id="profileUsername" placeholder="Username"/>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">📧 Email (pour recevoir les notifications)</label>
+          <input class="admin-input" id="profileEmail" type="email" placeholder="votre@email.com"/>
+          <div class="form-divider" style="height:1px;background:rgba(255,255,255,.1);margin:16px 0"></div>
+          <p style="color:rgba(255,255,255,.4);font-size:.75rem;margin-bottom:10px">⚠️ Laissez vide si vous ne voulez pas changer de mot de passe</p>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Mot de passe actuel</label>
+          <input class="admin-input" id="profileOldPass" type="password" placeholder="••••••"/>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Nouveau mot de passe</label>
+          <input class="admin-input" id="profileNewPass1" type="password" placeholder="••••••"/>
+          <label style="color:rgba(255,255,255,.5);font-size:.75rem">Confirmer nouveau mot de passe</label>
+          <input class="admin-input" id="profileNewPass2" type="password" placeholder="••••••"/>
+          <button class="btn-admin primary" onclick="updateProfile()" style="width:100%">💾 Mettre à jour mon profil</button>
+          <div id="profileMsg" style="display:none;margin-top:10px;text-align:center;font-size:.82rem"></div>
+        </div>
+      </div>
+
+      <button class="btn-admin back-btn" onclick="goToHomePage()" style="width:100%;padding:14px;justify-content:center;margin-top:20px">
+        <i class="fas fa-home"></i> Retourner à l'accueil du site
+      </button>
+      
+    </div><!-- /adminDashboard -->
+  </div>
+</div>
+
+<script>
+// ============ GLOBAL STATE ============
+let siteConfig = JSON.parse(localStorage.getItem('babos_config') || JSON.stringify({
+  heroBg: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1600&q=80',
+  heroLocation: '📍 Studio Professionnel · Thiès',
+  heroTagline: 'Capturer l\'instant. Révéler l\'essence.',
+  aboutText: '<p>Bienvenue chez Babos Photography. Photographe professionnel basé à Thiès, spécialisé dans les portraits de studio, la photographie familiale et les shootings corporate.</p><p>Des années d\'expérience et une passion sans limites pour l\'image au service de vos plus beaux souvenirs.</p>',
+  aboutImg: 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=600&q=80',
+  statYears: '8+', statClients: '500+', statPhotos: '12k+',
+  services: [
+    {icon:'🎭',title:'Portrait Studio',desc:'Séances individuelles avec éclairage professionnel.'},
+    {icon:'👨‍👩‍👧',title:'Photo de Famille',desc:'Immortalisez vos moments en famille.'},
+    {icon:'💼',title:'Corporate & CV',desc:'Photos pro pour LinkedIn et sites web.'},
+    {icon:'💍',title:'Mariage',desc:'Chaque détail capturé avec élégance.'},
+    {icon:'🤰',title:'Maternité',desc:'Séances tendres pour célébrer la vie.'},
+    {icon:'✨',title:'Mode & Éditorial',desc:'Shootings créatifs pour marques.'}
+  ],
+  phone: '+221 78 103 90 65',
+  email: 'babosphoto@gmail.com',
+  address: 'Studio Babos Photography, Thiès, Sénégal',
+  hours: 'Lun–Sam : 9h00 – 18h00',
+  social: {instagram:'#',facebook:'#',whatsapp:'#',email:'mailto:babosphoto@gmail.com'},
+  footerLogo: 'BABOS PHOTOGRAPHY',
+  footerCopy: '© 2025 Babos Photography · Thiès, Sénégal'
+}));
+
+let albums = JSON.parse(localStorage.getItem('babos_albums') || '["Général"]');
+let photos = JSON.parse(localStorage.getItem('babos_photos') || '[]');
+let reservations = JSON.parse(localStorage.getItem('babos_reservations') || '[]');
+
+// Initialiser les admins avec email par défaut
+let admins = JSON.parse(localStorage.getItem('babos_admins'));
+if (!admins || admins.length === 0) {
+  admins = [
+    {id:1,name:'Super Admin',username:'admin',password:'babos2025',email:'babosphoto@gmail.com',role:'super',createdAt:'01/01/2025'}
+  ];
+  localStorage.setItem('babos_admins', JSON.stringify(admins));
+}
+
+let currentAlbum = 'Général';
+let currentAdmin = null;
+let pendingPhotos = [];
+
+// ============ THEME ============
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  document.getElementById('themeIcon').className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  localStorage.setItem('babos_theme', next);
+}
+
+if (localStorage.getItem('babos_theme') === 'dark') {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.getElementById('themeIcon').className = 'fas fa-sun';
+}
+
+// ============ NAVIGATION ============
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+function toggleMobileMenu() {
+  document.getElementById('mobMenu').classList.toggle('open');
+}
+
+// ============ REVEAL ============
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ============ APPLY CONFIG ============
+function applyConfig() {
+  document.getElementById('heroBg').style.backgroundImage = `url('${siteConfig.heroBg}')`;
+  document.getElementById('heroLocation').textContent = siteConfig.heroLocation;
+  document.getElementById('heroTagline').textContent = siteConfig.heroTagline;
+  document.getElementById('aboutText').innerHTML = siteConfig.aboutText;
+  document.getElementById('aboutImg').src = siteConfig.aboutImg;
+  document.getElementById('statYears').textContent = siteConfig.statYears;
+  document.getElementById('statClients').textContent = siteConfig.statClients;
+  document.getElementById('statPhotos').textContent = siteConfig.statPhotos;
+  document.getElementById('contactPhone').textContent = siteConfig.phone;
+  document.getElementById('contactEmail').textContent = siteConfig.email;
+  document.getElementById('contactAddress').textContent = siteConfig.address;
+  document.getElementById('locationAddressText').textContent = siteConfig.address;
+  document.getElementById('locationHours').textContent = '🕐 ' + siteConfig.hours;
+  document.getElementById('footerLogo').textContent = siteConfig.footerLogo;
+  document.getElementById('footerCopy').textContent = siteConfig.footerCopy;
+  
+  document.getElementById('servicesGrid').innerHTML = siteConfig.services.map(s => `
+    <div class="service-card reveal">
+      <div class="service-icon">${s.icon}</div>
+      <h3>${s.title}</h3>
+      <p>${s.desc}</p>
+    </div>
+  `).join('');
+  
+  document.getElementById('socialLinks').innerHTML = Object.entries(siteConfig.social).map(([k,v]) => 
+    v ? `<a href="${v}" target="_blank" title="${k}"><i class="fab fa-${k}"></i></a>` : ''
+  ).join('');
+  
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ============ GALLERY ============
+function renderAlbums() {
+  document.getElementById('albumTabs').innerHTML = albums.map(a => `
+    <button class="album-tab ${a === currentAlbum ? 'active' : ''}" onclick="switchAlbum('${a}')">${a}</button>
+  `).join('');
+}
+
+function switchAlbum(name) {
+  currentAlbum = name;
+  renderAlbums();
+  renderGallery();
+}
+
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  const albumPhotos = photos.filter(p => p.album === currentAlbum);
+  
+  if (albumPhotos.length === 0) {
+    grid.innerHTML = '<p style="color:rgba(255,255,255,.3);text-align:center;padding:40px">Aucune photo dans cet album.</p>';
+    return;
+  }
+  
+  grid.innerHTML = albumPhotos.map(p => `
+    <div class="gallery-item" onclick="openLightbox('${p.src}')">
+      <img src="${p.src}" alt="${p.caption}" loading="lazy"/>
+      <div class="gallery-item-overlay"><span>${p.caption}</span></div>
+    </div>
+  `).join('');
+}
+
+function filterGallery() {
+  const query = document.getElementById('gallerySearch').value.toLowerCase();
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    const caption = item.querySelector('span')?.textContent?.toLowerCase() || '';
+    item.style.display = caption.includes(query) || query === '' ? 'block' : 'none';
+  });
+}
+
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+// ============ BOOKING ============
+function submitBooking() {
+  const prenom = document.getElementById('b-prenom').value.trim();
+  const nom = document.getElementById('b-nom').value.trim();
+  const tel = document.getElementById('b-tel').value.trim();
+  const email = document.getElementById('b-email').value.trim();
+  const adresse = document.getElementById('b-adresse').value.trim();
+  const phototype = document.getElementById('b-phototype').value;
+  const nbphotos = document.getElementById('b-nbphotos').value;
+  const date = document.getElementById('b-date').value;
+  const time = document.getElementById('b-time').value;
+  const msg = document.getElementById('b-msg').value;
+
+  if (!prenom || !nom || !tel || !date) {
+    alert('⚠️ Veuillez remplir tous les champs obligatoires.');
+    return;
+  }
+
+  const reservation = {
+    id: Date.now(),
+    client: `${prenom} ${nom}`,
+    tel, email, adresse,
+    phototype, nbphotos,
+    date, time, msg,
+    status: 'Nouveau',
+    createdAt: new Date().toISOString()
+  };
+
+  reservations.push(reservation);
+  localStorage.setItem('babos_reservations', JSON.stringify(reservations));
+
+  const smsText = `📸 Nouvelle réservation Babos Photography!\n\n👤 Client: ${prenom} ${nom}\n📞 Tel: ${tel}\n📧 Email: ${email}\n📍 Adresse: ${adresse}\n👥 Type: ${phototype || 'Non précisé'}\n🔢 Nb photos: ${nbphotos || 'Non précisé'}\n📅 Date: ${date} ${time}\n💬 Message: ${msg || 'Aucun'}`;
+
+  // Envoyer à TOUS les admins qui ont un email
+  const adminEmails = admins.filter(a => a.email && a.email.trim() !== '').map(a => a.email);
+  
+  // Ajouter l'email principal du site si pas déjà inclus
+  if (!adminEmails.includes(siteConfig.email)) {
+    adminEmails.push(siteConfig.email);
+  }
+  
+  // Ouvrir le client mail avec tous les destinataires
+  const mailtoLink = `mailto:${adminEmails.join(',')}?subject=${encodeURIComponent(`Nouvelle réservation - ${prenom} ${nom}`)}&body=${encodeURIComponent(smsText)}`;
+  
+  if (adminEmails.length > 0) {
+    window.open(mailtoLink, '_blank');
+  }
+
+  document.getElementById('bookingFormContainer').style.display = 'none';
+  document.getElementById('bookingSuccess').style.display = 'block';
+  
+  // Afficher le nombre d'admins notifiés
+  const successMsg = document.querySelector('#bookingSuccess p');
+  successMsg.textContent = `${adminEmails.length} administrateur(s) ont été notifié(s). Nous vous contacterons dans les 24 heures.`;
+}
+
+function resetBooking() {
+  document.getElementById('bookingFormContainer').style.display = 'block';
+  document.getElementById('bookingSuccess').style.display = 'none';
+  ['b-prenom','b-nom','b-tel','b-email','b-adresse','b-date','b-msg','b-nbphotos'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+function sendContactMessage() {
+  const nom = document.getElementById('c-nom').value.trim();
+  const email = document.getElementById('c-email').value.trim();
+  const msg = document.getElementById('c-msg').value.trim();
+  if (!nom || !email || !msg) { alert('Veuillez remplir tous les champs.'); return; }
+  
+  // Envoyer à tous les admins
+  const adminEmails = admins.filter(a => a.email && a.email.trim() !== '').map(a => a.email);
+  if (!adminEmails.includes(siteConfig.email)) adminEmails.push(siteConfig.email);
+  
+  window.open(`mailto:${adminEmails.join(',')}?subject=Message de ${nom} - Babos Photography&body=${encodeURIComponent(`De: ${nom}\nEmail: ${email}\n\n${msg}`)}`, '_blank');
+  alert('✅ Message envoyé à tous les administrateurs !');
+  document.getElementById('c-nom').value = '';
+  document.getElementById('c-email').value = '';
+  document.getElementById('c-msg').value = '';
+}
+
+// ============ ADMIN PANEL ============
+function openAdminPanel() {
+  document.getElementById('adminOverlay').classList.add('open');
+  document.getElementById('adminLoginScreen').style.display = 'block';
+  document.getElementById('adminDashboard').style.display = 'none';
+}
+
+function closeAdminPanel() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  currentAdmin = null;
+}
+
+function goToHomePage() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function adminLogin() {
+  // Recharger les admins depuis localStorage
+  admins = JSON.parse(localStorage.getItem('babos_admins') || '[]');
+  
+  const u = document.getElementById('adminUser').value.trim();
+  const p = document.getElementById('adminPass').value;
+  const found = admins.find(a => a.username === u && a.password === p);
+  
+  if (found) {
+    currentAdmin = found;
+    document.getElementById('adminLoginScreen').style.display = 'none';
+    document.getElementById('adminDashboard').style.display = 'block';
+    document.getElementById('adminError').style.display = 'none';
+    loadDashboard();
+    switchAdminTab('dashboard', document.querySelector('.admin-tab'));
+  } else {
+    document.getElementById('adminError').style.display = 'block';
+  }
+}
+
+function adminLogout() {
+  currentAdmin = null;
+  document.getElementById('adminLoginScreen').style.display = 'block';
+  document.getElementById('adminDashboard').style.display = 'none';
+  document.getElementById('adminUser').value = '';
+  document.getElementById('adminPass').value = '';
+}
+
+function switchAdminTab(tab, btn) {
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+  const tabEl = document.getElementById('tab-' + tab);
+  if (tabEl) tabEl.classList.add('active');
+  
+  if (tab === 'dashboard') loadDashboard();
+  if (tab === 'reservations') loadReservations();
+  if (tab === 'gallery') loadGalleryAdmin();
+  if (tab === 'content') loadContentEditor();
+  if (tab === 'admins') loadAdminsList();
+  if (tab === 'profile') loadProfile();
+}
+
+function loadDashboard() {
+  document.getElementById('dash-reservations').textContent = reservations.length;
+  document.getElementById('dash-photos').textContent = photos.length;
+  document.getElementById('dash-albums').textContent = albums.length;
+  document.getElementById('dash-admin-count').textContent = admins.length;
+  
+  const now = new Date();
+  const thisMonth = now.getMonth();
+  const newThisMonth = reservations.filter(r => {
+    const d = new Date(r.createdAt);
+    return d.getMonth() === thisMonth;
+  }).length;
+  document.getElementById('dash-new-month').textContent = newThisMonth;
+  
+  let visits = parseInt(localStorage.getItem('babos_visits') || '0');
+  document.getElementById('dash-visitors').textContent = visits;
+}
+
+function loadReservations() {
+  const list = document.getElementById('reservationsList');
+  if (reservations.length === 0) {
+    list.innerHTML = '<p style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">Aucune réservation.</p>';
+    return;
+  }
+  list.innerHTML = [...reservations].reverse().map(r => `
+    <div class="table-row">
+      <span>${r.client}</span>
+      <span>${r.tel}</span>
+      <span>${r.phototype || '-'}</span>
+      <span>${new Date(r.date).toLocaleDateString('fr-FR')}</span>
+      <span>${r.nbphotos || '-'}</span>
+      <span><button class="btn-admin success" onclick="confirmReservation(${r.id})" style="padding:5px 10px;font-size:.7rem">✓ Confirmer</button></span>
+    </div>
+  `).join('');
+}
+
+function confirmReservation(id) {
+  reservations = reservations.map(r => r.id === id ? {...r, status: 'Confirmé'} : r);
+  localStorage.setItem('babos_reservations', JSON.stringify(reservations));
+  loadReservations();
+}
+
+function clearAllReservations() {
+  if (confirm('Supprimer TOUTES les réservations ?')) {
+    reservations = [];
+    localStorage.setItem('babos_reservations', '[]');
+    loadReservations();
+  }
+}
+
+function loadGalleryAdmin() {
+  document.getElementById('albumListAdmin').innerHTML = albums.map(a => `
+    <span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(255,255,255,.06);border-radius:20px;font-size:.78rem;color:rgba(255,255,255,.7)">
+      ${a}
+      ${a !== 'Général' ? `<button onclick="deleteAlbum('${a}')" style="background:none;border:none;color:#ff7b7b;cursor:pointer">🗑️</button>` : ''}
+    </span>
+  `).join('');
+  
+  document.getElementById('photoAlbum').innerHTML = albums.map(a => `<option>${a}</option>`).join('');
+  document.getElementById('photoCountAdmin').textContent = photos.length;
+  document.getElementById('adminPhotoGrid').innerHTML = photos.map((p, i) => `
+    <div style="position:relative;border-radius:8px;overflow:hidden;aspect-ratio:1">
+      <img src="${p.src}" style="width:100%;height:100%;object-fit:cover"/>
+      <button onclick="deletePhoto(${i})" style="position:absolute;top:4px;right:4px;background:rgba(255,0,0,.7);color:#fff;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:.7rem">✕</button>
+    </div>
+  `).join('');
+}
+
+function createAlbum() {
+  const name = document.getElementById('newAlbumName').value.trim();
+  if (!name) return alert('Entrez un nom');
+  if (albums.includes(name)) return alert('Existe déjà');
+  albums.push(name);
+  localStorage.setItem('babos_albums', JSON.stringify(albums));
+  document.getElementById('newAlbumName').value = '';
+  loadGalleryAdmin();
+  renderAlbums();
+}
+
+function deleteAlbum(name) {
+  if (name === 'Général') return alert('Impossible');
+  if (confirm(`Supprimer "${name}" et ses photos ?`)) {
+    albums = albums.filter(a => a !== name);
+    photos = photos.filter(p => p.album !== name);
+    localStorage.setItem('babos_albums', JSON.stringify(albums));
+    localStorage.setItem('babos_photos', JSON.stringify(photos));
+    if (currentAlbum === name) currentAlbum = 'Général';
+    renderAlbums();
+    renderGallery();
+    loadGalleryAdmin();
+  }
+}
+
+function handlePhotoUpload(event) {
+  pendingPhotos = [];
+  document.getElementById('photoPreview').innerHTML = '';
+  
+  Array.from(event.target.files).forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      pendingPhotos.push({ src: e.target.result });
+      const el = document.createElement('img');
+      el.src = e.target.result;
+      el.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:8px';
+      document.getElementById('photoPreview').appendChild(el);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function savePhotos() {
+  const album = document.getElementById('photoAlbum').value;
+  const caption = document.getElementById('photoCaption').value.trim() || 'Photo';
+  
+  pendingPhotos.forEach(p => {
+    photos.push({ src: p.src, album, caption });
+  });
+  
+  localStorage.setItem('babos_photos', JSON.stringify(photos));
+  pendingPhotos = [];
+  document.getElementById('photoPreview').innerHTML = '';
+  document.getElementById('photoCaption').value = '';
+  document.getElementById('photoInput').value = '';
+  loadGalleryAdmin();
+  renderGallery();
+  alert('✅ Photos publiées !');
+}
+
+function deletePhoto(index) {
+  if (confirm('Supprimer cette photo ?')) {
+    photos.splice(index, 1);
+    localStorage.setItem('babos_photos', JSON.stringify(photos));
+    loadGalleryAdmin();
+    renderGallery();
+  }
+}
+
+function loadContentEditor() {
+  document.getElementById('edit-heroBg').value = siteConfig.heroBg;
+  document.getElementById('edit-heroLocation').value = siteConfig.heroLocation;
+  document.getElementById('edit-heroTagline').value = siteConfig.heroTagline;
+  document.getElementById('edit-aboutText').value = siteConfig.aboutText;
+  document.getElementById('edit-aboutImg').value = siteConfig.aboutImg;
+  document.getElementById('edit-phone').value = siteConfig.phone;
+  document.getElementById('edit-email').value = siteConfig.email;
+  document.getElementById('edit-address').value = siteConfig.address;
+  document.getElementById('edit-hours').value = siteConfig.hours;
+}
+
+function saveAllContent() {
+  siteConfig.heroBg = document.getElementById('edit-heroBg').value;
+  siteConfig.heroLocation = document.getElementById('edit-heroLocation').value;
+  siteConfig.heroTagline = document.getElementById('edit-heroTagline').value;
+  siteConfig.aboutText = document.getElementById('edit-aboutText').value;
+  siteConfig.aboutImg = document.getElementById('edit-aboutImg').value;
+  siteConfig.phone = document.getElementById('edit-phone').value;
+  siteConfig.email = document.getElementById('edit-email').value;
+  siteConfig.address = document.getElementById('edit-address').value;
+  siteConfig.hours = document.getElementById('edit-hours').value;
+  
+  localStorage.setItem('babos_config', JSON.stringify(siteConfig));
+  applyConfig();
+  alert('✅ Contenu sauvegardé !');
+}
+
+function loadProfile() {
+  if (!currentAdmin) return;
+  document.getElementById('profileCurrentUser').textContent = currentAdmin.name + ' (@' + currentAdmin.username + ')';
+  document.getElementById('profileName').value = currentAdmin.name || '';
+  document.getElementById('profileUsername').value = currentAdmin.username || '';
+  document.getElementById('profileEmail').value = currentAdmin.email || '';
+  document.getElementById('profileOldPass').value = '';
+  document.getElementById('profileNewPass1').value = '';
+  document.getElementById('profileNewPass2').value = '';
+}
+
+function updateProfile() {
+  if (!currentAdmin) return;
+  
+  const name = document.getElementById('profileName').value.trim();
+  const username = document.getElementById('profileUsername').value.trim();
+  const email = document.getElementById('profileEmail').value.trim();
+  const oldPass = document.getElementById('profileOldPass').value;
+  const newPass1 = document.getElementById('profileNewPass1').value;
+  const newPass2 = document.getElementById('profileNewPass2').value;
+  
+  const msg = document.getElementById('profileMsg');
+  
+  if (!name || !username) {
+    msg.style.display = 'block';
+    msg.style.color = '#ff7b7b';
+    msg.textContent = '❌ Nom et username sont obligatoires.';
+    return;
+  }
+  
+  // Vérifier si le username est déjà pris par un autre admin
+  const existingUser = admins.find(a => a.username === username && a.id !== currentAdmin.id);
+  if (existingUser) {
+    msg.style.display = 'block';
+    msg.style.color = '#ff7b7b';
+    msg.textContent = '❌ Ce nom d\'utilisateur est déjà pris.';
+    return;
+  }
+  
+  // Si changement de mot de passe
+  if (newPass1 || newPass2 || oldPass) {
+    if (oldPass !== currentAdmin.password) {
+      msg.style.display = 'block';
+      msg.style.color = '#ff7b7b';
+      msg.textContent = '❌ Mot de passe actuel incorrect.';
+      return;
+    }
+    if (newPass1.length < 6) {
+      msg.style.display = 'block';
+      msg.style.color = '#ff7b7b';
+      msg.textContent = '❌ Nouveau mot de passe : 6 caractères minimum.';
+      return;
+    }
+    if (newPass1 !== newPass2) {
+      msg.style.display = 'block';
+      msg.style.color = '#ff7b7b';
+      msg.textContent = '❌ Les nouveaux mots de passe ne correspondent pas.';
+      return;
+    }
+  }
+  
+  // Mettre à jour l'admin dans la liste
+  admins = admins.map(a => {
+    if (a.id === currentAdmin.id) {
+      return {
+        ...a,
+        name,
+        username,
+        email,
+        password: newPass1 || a.password
+      };
+    }
+    return a;
+  });
+  
+  localStorage.setItem('babos_admins', JSON.stringify(admins));
+  
+  // Mettre à jour la session courante
+  currentAdmin = admins.find(a => a.id === currentAdmin.id);
+  
+  document.getElementById('profileOldPass').value = '';
+  document.getElementById('profileNewPass1').value = '';
+  document.getElementById('profileNewPass2').value = '';
+  
+  msg.style.display = 'block';
+  msg.style.color = 'var(--gold)';
+  msg.textContent = '✅ Profil mis à jour avec succès !';
+  setTimeout(() => { msg.style.display = 'none'; }, 3000);
+  
+  loadProfile();
+}
+
+function loadAdminsList() {
+  document.getElementById('adminsList').innerHTML = admins.map(a => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid rgba(255,255,255,.05)">
+      <div>
+        <span style="color:#fff">${a.name}</span>
+        <small style="color:rgba(255,255,255,.4);margin-left:8px">@${a.username}</small>
+        ${a.email ? `<small style="color:rgba(255,255,255,.3);margin-left:8px">📧 ${a.email}</small>` : '<small style="color:#ff7b7b;margin-left:8px">⚠️ Pas d\'email</small>'}
+        <br><small style="color:rgba(255,255,255,.25)">${a.role === 'super' ? 'Super Admin' : 'Admin'} · Créé le ${a.createdAt}</small>
+      </div>
+      ${a.role !== 'super' ? `<button class="btn-admin danger" onclick="deleteAdmin(${a.id})" style="padding:5px 12px;font-size:.7rem">🗑️ Supprimer</button>` : '<span style="color:var(--gold);font-size:.7rem">🔒 Super Admin</span>'}
+    </div>
+  `).join('');
+}
+
+function addNewAdmin() {
+  const name = document.getElementById('newAdminName').value.trim();
+  const username = document.getElementById('newAdminUser').value.trim();
+  const email = document.getElementById('newAdminEmail').value.trim();
+  const password = document.getElementById('newAdminPass').value;
+  const msg = document.getElementById('adminFormMsg');
+  
+  if (!name || !username || !password) {
+    msg.style.display = 'block';
+    msg.style.color = '#ff7b7b';
+    msg.textContent = '❌ Nom, username et mot de passe sont obligatoires.';
+    return;
+  }
+  if (admins.find(a => a.username === username)) {
+    msg.style.display = 'block';
+    msg.style.color = '#ff7b7b';
+    msg.textContent = '❌ Username déjà pris.';
+    return;
+  }
+  if (password.length < 6) {
+    msg.style.display = 'block';
+    msg.style.color = '#ff7b7b';
+    msg.textContent = '❌ Mot de passe : 6 caractères minimum.';
+    return;
+  }
+  
+  admins.push({
+    id: Date.now(),
+    name,
+    username,
+    email,
+    password,
+    role: 'admin',
+    createdAt: new Date().toLocaleDateString('fr-FR')
+  });
+  
+  localStorage.setItem('babos_admins', JSON.stringify(admins));
+  
+  document.getElementById('newAdminName').value = '';
+  document.getElementById('newAdminUser').value = '';
+  document.getElementById('newAdminEmail').value = '';
+  document.getElementById('newAdminPass').value = '';
+  
+  msg.style.display = 'block';
+  msg.style.color = 'var(--gold)';
+  msg.textContent = email ? '✅ Admin créé ! Il recevra les notifications par email.' : '⚠️ Admin créé mais sans email (pas de notifications).';
+  setTimeout(() => { msg.style.display = 'none'; }, 4000);
+  
+  loadAdminsList();
+}
+
+function deleteAdmin(id) {
+  if (confirm('Supprimer cet admin ? Il ne recevra plus les notifications.')) {
+    admins = admins.filter(a => a.id !== id);
+    localStorage.setItem('babos_admins', JSON.stringify(admins));
+    loadAdminsList();
+  }
+}
+
+// ============ INIT ============
+applyConfig();
+renderAlbums();
+renderGallery();
+
+// Track visit
+let visits = parseInt(localStorage.getItem('babos_visits') || '0');
+localStorage.setItem('babos_visits', visits + 1);
+</script>
+
+</body>
+</html>
