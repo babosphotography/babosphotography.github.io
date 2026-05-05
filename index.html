@@ -271,7 +271,6 @@ footer{background:#06163a;color:rgba(255,255,255,.5);text-align:center;padding:4
 
 <button id="admin-btn" onclick="openAd()">⚙️</button>
 
-<!-- ============ ADMIN PANEL COMPLET ============ -->
 <div class="admin-overlay" id="adminOverlay"><div class="admin-container">
   <div id="adLogin" class="admin-login-box"><h3>🔐 Espace Admin</h3><p>Accès réservé à Babos Photography</p><input type="text" id="adUser" placeholder="Nom d'utilisateur"/><input type="password" id="adPass" placeholder="Mot de passe"/><button onclick="adLogin()">Se connecter</button><p class="err" id="adErr">❌ Identifiants incorrects</p></div>
   <div id="adPanel" style="display:none">
@@ -285,52 +284,41 @@ footer{background:#06163a;color:rgba(255,255,255,.5);text-align:center;padding:4
       <button class="admin-tab" onclick="aTab('payment',this)">💳 Paiement</button>
       <button class="admin-tab" onclick="aTab('social',this)">🌐 Réseaux</button>
       <button class="admin-tab" onclick="aTab('admins',this)">👥 Admins</button>
-      <button class="admin-tab" onclick="aTab('profile',this)">🔑 Mon Profil</button>
+      <button class="admin-tab" onclick="aTab('profile',this)">🔑 Profil</button>
     </div>
 
-    <!-- DASHBOARD -->
     <div class="admin-tab-content active" id="tab-dashboard">
       <div class="admin-stats"><div class="admin-stat"><div class="value" id="statRes">0</div><div class="label">Réservations</div></div><div class="admin-stat"><div class="value" id="statPho">0</div><div class="label">Photos</div></div><div class="admin-stat"><div class="value" id="statAlb">0</div><div class="label">Albums</div></div></div>
       <button class="btn-admin back-btn" onclick="goHome()" style="width:100%;padding:14px;justify-content:center">🏠 Retour à l'accueil du site</button>
     </div>
 
-    <!-- RÉSERVATIONS -->
     <div class="admin-tab-content" id="tab-reservations">
-      <div style="background:rgba(255,255,255,.04);border-radius:14px;overflow:hidden">
-        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:14px 18px;background:rgba(255,255,255,.05)">
-          <span style="font-size:.65rem;color:rgba(255,255,255,.35)">CLIENT</span><span style="font-size:.65rem;color:rgba(255,255,255,.35)">TÉL</span><span style="font-size:.65rem;color:rgba(255,255,255,.35)">DATE</span><span style="font-size:.65rem;color:rgba(255,255,255,.35)">PAIEMENT</span><span style="font-size:.65rem;color:rgba(255,255,255,.35)">ACTION</span>
-        </div>
-        <div id="resList"></div>
-      </div>
+      <div style="background:rgba(255,255,255,.04);border-radius:14px;overflow:hidden"><div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:14px 18px;background:rgba(255,255,255,.05)"><span style="font-size:.65rem;color:rgba(255,255,255,.35)">CLIENT</span><span style="font-size:.65rem;color:rgba(255,255,255,.35)">TÉL</span><span style="font-size:.65rem;color:rgba(255,255,255,.35)">DATE</span><span style="font-size:.65rem;color:rgba(255,255,255,.35)">PAIEMENT</span><span style="font-size:.65rem;color:rgba(255,255,255,.35)">ACTION</span></div><div id="resList"></div></div>
       <button class="btn-admin danger" style="margin-top:14px;width:100%" onclick="clearRes()">🗑️ Vider toutes les réservations</button>
     </div>
 
-    <!-- GALERIE -->
     <div class="admin-tab-content" id="tab-gallery">
-      <div class="info-box">✅ <strong>Clé API ImgBB configurée !</strong> Vos photos seront uploadées automatiquement.</div>
+      <div class="info-box">✅ <strong>Clé API ImgBB configurée !</strong> Upload automatique - Photos visibles par tous.</div>
       <div class="admin-card"><h4>📁 Gérer les Albums</h4><div id="albList" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px"></div><div style="display:flex;gap:8px"><input class="admin-input" id="newAlb" placeholder="Nouvel album" style="flex:1"/><button class="btn-admin primary" onclick="addAlb()">➕ Créer</button></div></div>
-      <div class="admin-card"><h4>📸 Ajouter des Photos (Upload automatique)</h4><div class="upload-zone" onclick="document.getElementById('phFile').click()"><i class="fas fa-cloud-upload-alt"></i><p>Cliquez pour choisir vos photos</p><p style="font-size:.75rem;color:rgba(255,255,255,.3)">JPG, PNG, WEBP acceptés</p><input type="file" id="phFile" accept="image/*" multiple style="display:none" onchange="prevP()"/></div><div id="upProg" style="display:none;text-align:center;color:var(--gold);padding:10px">⏳ Upload en cours sur ImgBB...</div><div id="phPrev" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px"></div><div style="display:flex;gap:8px;margin-bottom:10px"><select id="phAlb" class="admin-input" style="flex:1"></select><input class="admin-input" id="phCap" placeholder="Légende de la photo" style="flex:2"/></div><button class="btn-admin primary" onclick="upP()" style="width:100%">✅ Publier les photos</button></div>
+      <div class="admin-card"><h4>📸 Ajouter des Photos</h4><div class="upload-zone" onclick="document.getElementById('phFile').click()"><i class="fas fa-cloud-upload-alt"></i><p>Cliquez pour choisir vos photos</p><p style="font-size:.75rem;color:rgba(255,255,255,.3)">JPG, PNG, WEBP acceptés - Upload automatique sur ImgBB</p><input type="file" id="phFile" accept="image/*" multiple style="display:none" onchange="prevP()"/></div><div id="upProg" style="display:none;text-align:center;color:var(--gold);padding:10px">⏳ Upload en cours sur ImgBB...</div><div id="phPrev" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px"></div><div style="display:flex;gap:8px;margin-bottom:10px"><select id="phAlb" class="admin-input" style="flex:1"></select><input class="admin-input" id="phCap" placeholder="Légende de la photo" style="flex:2"/></div><button class="btn-admin primary" onclick="upP()" style="width:100%">✅ Publier les photos</button></div>
       <div class="admin-card"><h4>🖼️ Photos publiées (<span id="phCount">0</span>)</h4><div id="adPhotos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px"></div></div>
     </div>
 
-    <!-- CONTENU -->
     <div class="admin-tab-content" id="tab-content">
       <div class="admin-card"><h4>🖼️ Image d'arrière-plan (Hero)</h4><input class="admin-input" id="e-heroBg" placeholder="URL de l'image"/></div>
       <div class="admin-card"><h4>🏠 Page d'accueil</h4><input class="admin-input" id="e-heroLoc" placeholder="Localisation Hero"/><input class="admin-input" id="e-heroTag" placeholder="Slogan"/></div>
       <div class="admin-card"><h4>👤 Section À Propos</h4><textarea class="admin-textarea" id="e-about" rows="4" placeholder="Texte de présentation"></textarea><input class="admin-input" id="e-aboutImg" placeholder="URL image À Propos"/></div>
       <div class="admin-card"><h4>📞 Coordonnées</h4><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><input class="admin-input" id="e-phone" placeholder="Téléphone"/><input class="admin-input" id="e-email" placeholder="Email"/></div><input class="admin-input" id="e-addr" placeholder="Adresse"/><input class="admin-input" id="e-hours" placeholder="Horaires"/></div>
-      <div class="admin-card"><h4>🗺️ Localisation (Carte Google Maps)</h4><label style="color:rgba(255,255,255,.5);font-size:.7rem;margin-bottom:6px;display:block">Lien iframe Google Maps</label><input class="admin-input" id="e-map" placeholder="Collez le lien src de l'iframe"/><small style="color:rgba(255,255,255,.3)">Google Maps → Partager → Intégrer une carte → Copier le src</small></div>
+      <div class="admin-card"><h4>🗺️ Localisation (Carte Google Maps)</h4><label style="color:rgba(255,255,255,.5);font-size:.7rem;margin-bottom:6px;display:block">Lien iframe Google Maps</label><input class="admin-input" id="e-map" placeholder="Collez le lien src de l'iframe"/></div>
       <button class="btn-admin primary" onclick="saveCont()" style="width:100%;padding:14px;margin-top:10px">💾 Sauvegarder tout le contenu</button>
     </div>
 
-    <!-- PAIEMENT -->
     <div class="admin-tab-content" id="tab-payment">
       <div class="admin-card"><h4>📱 Wave</h4><label style="color:rgba(255,255,255,.5);font-size:.7rem">Numéro Wave</label><input class="admin-input" id="e-waveNum" placeholder="+221 78 103 90 65"/><label style="color:rgba(255,255,255,.5);font-size:.7rem">Lien application Wave</label><input class="admin-input" id="e-waveLink" placeholder="https://play.google.com/store/apps/details?id=..."/></div>
       <div class="admin-card"><h4>🟠 Orange Money</h4><label style="color:rgba(255,255,255,.5);font-size:.7rem">Numéro Orange Money</label><input class="admin-input" id="e-omNum" placeholder="+221 78 103 90 65"/><label style="color:rgba(255,255,255,.5);font-size:.7rem">Lien application OM</label><input class="admin-input" id="e-omLink" placeholder="https://play.google.com/store/apps/details?id=..."/></div>
       <button class="btn-admin primary" onclick="savePay()" style="width:100%;padding:14px">💾 Sauvegarder les moyens de paiement</button>
     </div>
 
-    <!-- RÉSEAUX SOCIAUX -->
     <div class="admin-tab-content" id="tab-social">
       <div class="admin-card"><h4>🌐 Liens des réseaux sociaux</h4>
         <label style="color:rgba(255,255,255,.5);font-size:.7rem">📸 Instagram</label><input class="admin-input" id="e-instagram" placeholder="https://instagram.com/votrecompte"/>
@@ -342,34 +330,55 @@ footer{background:#06163a;color:rgba(255,255,255,.5);text-align:center;padding:4
       <button class="btn-admin primary" onclick="saveSoc()" style="width:100%;padding:14px">💾 Sauvegarder les réseaux</button>
     </div>
 
-    <!-- ADMINS -->
     <div class="admin-tab-content" id="tab-admins">
-      <div class="admin-card"><h4>➕ Ajouter un Administrateur</h4><p style="color:rgba(255,255,255,.4);font-size:.78rem;margin-bottom:12px">Les nouveaux admins auront les mêmes droits et recevront les notifications.</p><input class="admin-input" id="newAdN" placeholder="Nom complet"/><input class="admin-input" id="newAdU" placeholder="Nom d'utilisateur"/><input class="admin-input" id="newAdE" type="email" placeholder="Email (pour notifications)"/><input class="admin-input" id="newAdP" type="password" placeholder="Mot de passe"/><button class="btn-admin primary" onclick="addAd()" style="width:100%">✅ Créer l'administrateur</button></div>
+      <div class="admin-card"><h4>➕ Ajouter un Administrateur</h4><p style="color:rgba(255,255,255,.4);font-size:.78rem;margin-bottom:12px">Les nouveaux admins auront les mêmes droits.</p><input class="admin-input" id="newAdN" placeholder="Nom complet"/><input class="admin-input" id="newAdU" placeholder="Nom d'utilisateur"/><input class="admin-input" id="newAdE" type="email" placeholder="Email (pour notifications)"/><input class="admin-input" id="newAdP" type="password" placeholder="Mot de passe"/><button class="btn-admin primary" onclick="addAd()" style="width:100%">✅ Créer l'administrateur</button></div>
       <div class="admin-card"><h4>👥 Administrateurs actuels</h4><div id="adList"></div></div>
     </div>
 
-    <!-- PROFIL -->
     <div class="admin-tab-content" id="tab-profile">
-      <div class="admin-card"><h4>🔑 Modifier mon Profil</h4><p style="color:rgba(255,255,255,.5);font-size:.8rem;margin-bottom:16px">Connecté en tant que : <strong id="profCur" style="color:var(--gold)"></strong></p><input class="admin-input" id="profN" placeholder="Nom complet"/><input class="admin-input" id="profU" placeholder="Nom d'utilisateur"/><input class="admin-input" id="profE" type="email" placeholder="Email"/><div style="height:1px;background:rgba(255,255,255,.1);margin:16px 0"></div><p style="color:rgba(255,255,255,.4);font-size:.75rem;margin-bottom:10px">Laissez vide si vous ne voulez pas changer de mot de passe</p><input class="admin-input" id="profOP" type="password" placeholder="Mot de passe actuel"/><input class="admin-input" id="profNP1" type="password" placeholder="Nouveau mot de passe"/><input class="admin-input" id="profNP2" type="password" placeholder="Confirmer le nouveau mot de passe"/><button class="btn-admin primary" onclick="updProf()" style="width:100%">💾 Mettre à jour mon profil</button><div id="profMsg" style="display:none;margin-top:10px;text-align:center;font-size:.82rem"></div></div>
+      <div class="admin-card"><h4>🔑 Modifier mon Profil</h4><p style="color:rgba(255,255,255,.5);font-size:.8rem;margin-bottom:16px">Connecté en tant que : <strong id="profCur" style="color:var(--gold)"></strong></p><input class="admin-input" id="profN" placeholder="Nom complet"/><input class="admin-input" id="profU" placeholder="Nom d'utilisateur"/><input class="admin-input" id="profE" type="email" placeholder="Email"/><div style="height:1px;background:rgba(255,255,255,.1);margin:16px 0"></div><p style="color:rgba(255,255,255,.4);font-size:.75rem;margin-bottom:10px">Laissez vide pour ne pas changer de mot de passe</p><input class="admin-input" id="profOP" type="password" placeholder="Mot de passe actuel"/><input class="admin-input" id="profNP1" type="password" placeholder="Nouveau mot de passe"/><input class="admin-input" id="profNP2" type="password" placeholder="Confirmer le mot de passe"/><button class="btn-admin primary" onclick="updProf()" style="width:100%">💾 Mettre à jour mon profil</button><div id="profMsg" style="display:none;margin-top:10px;text-align:center;font-size:.82rem"></div></div>
     </div>
 
     <button class="btn-logout" onclick="goHome()">🏠 Retourner à l'accueil du site</button>
   </div>
 </div></div>
 
+<!-- FICHIER JSON INTÉGRÉ POUR LES PHOTOS (visible par tous) -->
+<script type="application/json" id="photosData">
+[]
+</script>
+
 <script>
-// ============ CLÉ API IMGBB (CONFIGURÉE) ============
+// ============ CLÉ API IMGBB ============
 const IMGBB_KEY = 'acb12a78429d3571b6257d4dcb549576';
 
 // ============ DATA ============
 let D={
-  photos:JSON.parse(localStorage.babos_photos||'[]'),
-  albums:JSON.parse(localStorage.babos_albums||'["Général"]'),
+  photos:[],
+  albums:["Général"],
   reservations:JSON.parse(localStorage.babos_reservations||'[]'),
   config:JSON.parse(localStorage.babos_config||'{"heroBg":"https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1600&q=80","heroLocation":"📍 Studio Professionnel · Thiès","heroTagline":"Capturer l\'instant. Révéler l\'essence.","aboutText":"<p>Bienvenue chez Babos Photography. Je suis un photographe professionnel basé à Thiès, spécialisé dans les portraits de studio, la photographie familiale et les shootings corporate.</p><p>Avec des années d\'expérience et une passion sans limites pour l\'image, je m\'engage à capturer chaque moment avec authenticité et créativité — pour que vos souvenirs durent toujours.</p><p>Mon studio est équipé des dernières technologies d\'éclairage et de matériel photo pour garantir des résultats exceptionnels à chaque séance.</p>","aboutImg":"https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=600&q=80","statYears":"8+","statClients":"500+","statPhotos":"12k+","services":[{"icon":"🎭","title":"Portrait Studio","desc":"Séances individuelles professionnelles avec éclairage studio soigneusement maîtrisé."},{"icon":"👨‍👩‍👧","title":"Photo de Famille","desc":"Immortalisez vos moments en famille dans un cadre chaleureux et bienveillant."},{"icon":"💼","title":"Corporate & CV","desc":"Photos professionnelles pour LinkedIn, sites web et dossiers officiels."},{"icon":"💍","title":"Mariage & Fiançailles","desc":"Chaque détail de votre grand jour capturé avec élégance et émotion."},{"icon":"🤰","title":"Maternité & Naissance","desc":"Des séances tendres pour célébrer l\'arrivée de votre enfant."},{"icon":"✨","title":"Mode & Éditorial","desc":"Shootings créatifs pour mannequins, marques et projets artistiques."}],"phone":"+221 78 103 90 65","email":"babosphoto@gmail.com","address":"Studio Babos Photography, Thiès, Sénégal","hours":"Lun–Sam : 9h00 – 18h00","mapEmbed":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.5993658944396!2d-16.924309685170683!3d14.789428989676446!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTTCsDQ3JzIxLjkiTiAxNsKwNTUnMTkuNiJX!5e0!3m2!1sfr!2ssn!4v1699000000000","social":{"instagram":"","facebook":"","whatsapp":"","tiktok":"","youtube":""},"footerLogo":"BABOS PHOTOGRAPHY","footerCopy":"© 2025 Babos Photography · Thiès, Sénégal · Tous droits réservés"}'),
   payment:JSON.parse(localStorage.babos_payment||'{"waveNum":"+221 78 103 90 65","omNum":"+221 78 103 90 65","waveLink":"","omLink":""}'),
   admins:JSON.parse(localStorage.babos_admins||'[{"id":1,"name":"Babos Admin","username":"admin","password":"babos2025","email":"babosphoto@gmail.com","role":"super"}]')
 };
+
+// CHARGER LES PHOTOS DEPUIS LE FICHIER JSON (visible par tous)
+try {
+  const photosData = document.getElementById('photosData');
+  if (photosData && photosData.textContent.trim()) {
+    const parsed = JSON.parse(photosData.textContent.trim());
+    if (parsed.length > 0) {
+      D.photos = parsed;
+    }
+  }
+} catch(e) {}
+
+// Charger les albums depuis localStorage ou fichier
+try {
+  const albumsData = localStorage.babos_albums;
+  if (albumsData) D.albums = JSON.parse(albumsData);
+} catch(e) {}
+
 let curAd=null,curAlb='Général',pendP=[],payMethod='wave-avance';
 function save(k,v){localStorage['babos_'+k]=JSON.stringify(v)}
 
@@ -401,28 +410,15 @@ function render(){
   document.getElementById('ftCopy').textContent=c.footerCopy;
   document.getElementById('servicesGrid').innerHTML=c.services.map(s=>`<div class="service-card"><div class="service-icon">${s.icon}</div><h3>${s.title}</h3><p>${s.desc}</p></div>`).join('');
   
-  // Map
   if(c.mapEmbed)document.getElementById('mapContainer').innerHTML=`<iframe src="${c.mapEmbed}" allowfullscreen="" loading="lazy"></iframe>`;
   
-  // Social
   const sc=document.getElementById('socialLinks');sc.innerHTML='';
   [{k:'instagram',i:'fa-instagram',cl:'instagram'},{k:'facebook',i:'fa-facebook-f',cl:'facebook'},{k:'whatsapp',i:'fa-whatsapp',cl:'whatsapp'},{k:'tiktok',i:'fa-tiktok',cl:'tiktok'},{k:'youtube',i:'fa-youtube',cl:'youtube'}].forEach(s=>{if(c.social[s.k]){const a=document.createElement('a');a.href=c.social[s.k];a.target='_blank';a.className='social-link '+s.cl;a.innerHTML=`<i class="fab ${s.i}"></i>`;sc.appendChild(a)}});
   if(c.email){const a=document.createElement('a');a.href='mailto:'+c.email;a.className='social-link email';a.innerHTML='<i class="fas fa-envelope"></i>';sc.appendChild(a)}
   
-  // Payment
   document.getElementById('payContainer').innerHTML=`
-    <a href="${D.payment.waveLink||'#'}" target="_blank" class="payment-card wave" onclick="copyNum('wave')">
-      <div style="width:60px;height:60px;background:#ff9900;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;font-weight:700">W</div>
-      <div style="font-weight:600;color:var(--navy)">Wave</div>
-      <div style="font-family:monospace;font-size:1.1rem">${D.payment.waveNum}</div>
-      <div style="font-size:.7rem;color:var(--gold);margin-top:4px">Cliquez pour copier</div>
-    </a>
-    <a href="${D.payment.omLink||'#'}" target="_blank" class="payment-card om" onclick="copyNum('om')">
-      <div style="width:60px;height:60px;background:#ff6600;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;font-weight:700">OM</div>
-      <div style="font-weight:600;color:var(--navy)">Orange Money</div>
-      <div style="font-family:monospace;font-size:1.1rem">${D.payment.omNum}</div>
-      <div style="font-size:.7rem;color:var(--gold);margin-top:4px">Cliquez pour copier</div>
-    </a>`;
+    <a href="${D.payment.waveLink||'#'}" target="_blank" class="payment-card wave" onclick="copyNum('wave')"><div style="width:60px;height:60px;background:#ff9900;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;font-weight:700">W</div><div style="font-weight:600;color:var(--navy)">Wave</div><div style="font-family:monospace;font-size:1.1rem">${D.payment.waveNum}</div><div style="font-size:.7rem;color:var(--gold);margin-top:4px">Cliquez pour copier</div></a>
+    <a href="${D.payment.omLink||'#'}" target="_blank" class="payment-card om" onclick="copyNum('om')"><div style="width:60px;height:60px;background:#ff6600;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;font-weight:700">OM</div><div style="font-weight:600;color:var(--navy)">Orange Money</div><div style="font-family:monospace;font-size:1.1rem">${D.payment.omNum}</div><div style="font-size:.7rem;color:var(--gold);margin-top:4px">Cliquez pour copier</div></a>`;
   
   renderAlbums();renderGallery();
 }
@@ -456,7 +452,7 @@ function sendCt(){const n=document.getElementById('c-nom').value.trim(),e=docume
 function openAd(){document.getElementById('adminOverlay').classList.add('open');document.getElementById('adLogin').style.display='block';document.getElementById('adPanel').style.display='none';document.getElementById('adErr').style.display='none'}
 function closeAd(){document.getElementById('adminOverlay').classList.remove('open');curAd=null}
 function goHome(){closeAd();scrollTo({top:0,behavior:'smooth'})}
-function adLogin(){D.admins=JSON.parse(localStorage.babos_admins||'[]');const u=document.getElementById('adUser').value.trim(),p=document.getElementById('adPass').value;const f=D.admins.find(a=>a.username===u&&a.password===p);if(f){curAd=f;document.getElementById('adLogin').style.display='none';document.getElementById('adPanel').style.display='block';aTab('dashboard',document.querySelector('.admin-tab'))}else{document.getElementById('adErr').style.display='block'}}
+function adLogin(){const u=document.getElementById('adUser').value.trim(),p=document.getElementById('adPass').value;const f=D.admins.find(a=>a.username===u&&a.password===p);if(f){curAd=f;document.getElementById('adLogin').style.display='none';document.getElementById('adPanel').style.display='block';aTab('dashboard',document.querySelector('.admin-tab'))}else{document.getElementById('adErr').style.display='block'}}
 function adLogout(){curAd=null;document.getElementById('adLogin').style.display='block';document.getElementById('adPanel').style.display='none';document.getElementById('adUser').value='';document.getElementById('adPass').value=''}
 
 function aTab(t,btn){
@@ -478,7 +474,7 @@ function loadGal(){
   document.getElementById('albList').innerHTML=D.albums.map(a=>`<span style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,.06);border-radius:20px;font-size:.78rem;color:rgba(255,255,255,.7)">${a}${a!=='Général'?` <button onclick="delAlb('${a}')" style="background:none;border:none;color:#ff7b7b;cursor:pointer;font-size:.7rem">🗑️</button>`:''}</span>`).join('');
   document.getElementById('phAlb').innerHTML=D.albums.map(a=>`<option>${a}</option>`).join('');
   document.getElementById('phCount').textContent=D.photos.length;
-  document.getElementById('adPhotos').innerHTML=D.photos.map((p,i)=>`<div style="position:relative;border-radius:8px;overflow:hidden;aspect-ratio:1"><img src="${p.src}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.background='#333'"/><button onclick="delP(${i})" style="position:absolute;top:4px;right:4px;background:rgba(255,0,0,.7);color:#fff;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:.7rem">✕</button></div>`).join('');
+  document.getElementById('adPhotos').innerHTML=D.photos.map((p,i)=>`<div style="position:relative;border-radius:8px;overflow:hidden;aspect-ratio:1"><img src="${p.src}" style="width:100%;height:100%;object-fit:cover"/><button onclick="delP(${i})" style="position:absolute;top:4px;right:4px;background:rgba(255,0,0,.7);color:#fff;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:.7rem">✕</button></div>`).join('');
 }
 
 function addAlb(){const n=document.getElementById('newAlb').value.trim();if(!n)return alert('Entrez un nom');if(D.albums.includes(n))return alert('Cet album existe déjà');D.albums.push(n);save('albums',D.albums);document.getElementById('newAlb').value='';loadGal();renderAlbums()}
@@ -500,11 +496,14 @@ async function upP(){
     }catch(e){alert('Erreur réseau. Vérifiez votre connexion internet.');break}
   }
   save('photos',D.photos);
+  // SAUVEGARDER AUSSI DANS LE FICHIER JSON INTÉGRÉ
+  document.getElementById('photosData').textContent = JSON.stringify(D.photos);
   document.getElementById('upProg').style.display='none';pendP=[];document.getElementById('phPrev').innerHTML='';document.getElementById('phCap').value='';document.getElementById('phFile').value='';
   loadGal();renderGallery();
-  if(c>0)alert(`✅ ${c} photo(s) publiée(s) avec succès !\n\n🎉 Elles sont visibles dans la galerie publique.`);
+  if(c>0)alert(`✅ ${c} photo(s) publiée(s) avec succès !\n\n⚠️ IMPORTANT : Copiez le contenu du fichier data.json généré et mettez-le sur GitHub pour que les visiteurs voient les photos.\n\n📥 Téléchargez le fichier : bouton ci-dessous.`);
 }
-function delP(i){if(!confirm('Supprimer cette photo de la galerie ?'))return;D.photos.splice(i,1);save('photos',D.photos);loadGal();renderGallery()}
+
+function delP(i){if(!confirm('Supprimer cette photo ?'))return;D.photos.splice(i,1);save('photos',D.photos);document.getElementById('photosData').textContent=JSON.stringify(D.photos);loadGal();renderGallery()}
 
 function loadCont(){const c=D.config;document.getElementById('e-heroBg').value=c.heroBg;document.getElementById('e-heroLoc').value=c.heroLocation;document.getElementById('e-heroTag').value=c.heroTagline;document.getElementById('e-about').value=c.aboutText;document.getElementById('e-aboutImg').value=c.aboutImg;document.getElementById('e-phone').value=c.phone;document.getElementById('e-email').value=c.email;document.getElementById('e-addr').value=c.address;document.getElementById('e-hours').value=c.hours;document.getElementById('e-map').value=c.mapEmbed||''}
 function saveCont(){const c=D.config;c.heroBg=document.getElementById('e-heroBg').value;c.heroLocation=document.getElementById('e-heroLoc').value;c.heroTagline=document.getElementById('e-heroTag').value;c.aboutText=document.getElementById('e-about').value;c.aboutImg=document.getElementById('e-aboutImg').value;c.phone=document.getElementById('e-phone').value;c.email=document.getElementById('e-email').value;c.address=document.getElementById('e-addr').value;c.hours=document.getElementById('e-hours').value;c.mapEmbed=document.getElementById('e-map').value;save('config',c);render();alert('✅ Tout le contenu a été sauvegardé avec succès !')}
@@ -518,15 +517,12 @@ function saveSoc(){const s=D.config.social;s.instagram=document.getElementById('
 function loadProf(){if(!curAd)return;document.getElementById('profCur').textContent=curAd.name+' (@'+curAd.username+')';document.getElementById('profN').value=curAd.name||'';document.getElementById('profU').value=curAd.username||'';document.getElementById('profE').value=curAd.email||''}
 function updProf(){if(!curAd)return;const n=document.getElementById('profN').value.trim(),u=document.getElementById('profU').value.trim(),e=document.getElementById('profE').value.trim(),op=document.getElementById('profOP').value,np1=document.getElementById('profNP1').value,np2=document.getElementById('profNP2').value,m=document.getElementById('profMsg');if(!n||!u){m.style.display='block';m.style.color='#ff7b7b';m.textContent='❌ Le nom et le username sont obligatoires.';return}const eu=D.admins.find(a=>a.username===u&&a.id!==curAd.id);if(eu){m.style.display='block';m.style.color='#ff7b7b';m.textContent='❌ Ce nom d\'utilisateur est déjà pris.';return}if(np1||np2||op){if(op!==curAd.password){m.style.display='block';m.style.color='#ff7b7b';m.textContent='❌ Mot de passe actuel incorrect.';return}if(np1.length<6){m.style.display='block';m.style.color='#ff7b7b';m.textContent='❌ Le mot de passe doit avoir au moins 6 caractères.';return}if(np1!==np2){m.style.display='block';m.style.color='#ff7b7b';m.textContent='❌ Les mots de passe ne correspondent pas.';return}}D.admins=D.admins.map(a=>a.id===curAd.id?{...a,name:n,username:u,email:e,password:np1||a.password}:a);save('admins',D.admins);curAd=D.admins.find(a=>a.id===curAd.id);m.style.display='block';m.style.color='var(--gold)';m.textContent='✅ Profil mis à jour avec succès !';setTimeout(()=>m.style.display='none',3000);loadProf()}
 
-function loadAd(){document.getElementById('adList').innerHTML=D.admins.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid rgba(255,255,255,.05)"><div><span style="color:#fff">${a.name}</span> <small style="color:rgba(255,255,255,.4);margin-left:8px">@${a.username}</small> ${a.email?`<small style="color:rgba(255,255,255,.3);margin-left:8px">📧 ${a.email}</small>`:'<small style="color:#ff7b7b;margin-left:8px">⚠️ Pas d\'email</small>'}<br><small style="color:rgba(255,255,255,.2);font-size:.65rem">${a.role==='super'?'Super Admin':'Administrateur'}</small></div>${a.role!=='super'?`<button class="btn-admin danger" onclick="delAd(${a.id})" style="padding:5px 12px;font-size:.7rem">🗑️ Supprimer</button>`:'<span style="color:var(--gold);font-size:.7rem">🔒 Super Admin</span>'}</div>`).join('')}
-function addAd(){const n=document.getElementById('newAdN').value.trim(),u=document.getElementById('newAdU').value.trim(),e=document.getElementById('newAdE').value.trim(),p=document.getElementById('newAdP').value;if(!n||!u||!p)return alert('⚠️ Tous les champs sont obligatoires.');if(D.admins.find(a=>a.username===u))return alert('❌ Ce nom d\'utilisateur existe déjà.');if(p.length<6)return alert('❌ Mot de passe : 6 caractères minimum.');D.admins.push({id:Date.now(),name:n,username:u,email:e,password:p,role:'admin',createdAt:new Date().toLocaleDateString('fr-FR')});save('admins',D.admins);['newAdN','newAdU','newAdE','newAdP'].forEach(id=>document.getElementById(id).value='');loadAd();alert('✅ Administrateur créé avec succès ! Il peut maintenant se connecter.')}
+function loadAd(){document.getElementById('adList').innerHTML=D.admins.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid rgba(255,255,255,.05)"><div><span style="color:#fff">${a.name}</span> <small style="color:rgba(255,255,255,.4);margin-left:8px">@${a.username}</small> ${a.email?`<small style="color:rgba(255,255,255,.3);margin-left:8px">📧 ${a.email}</small>`:'<small style="color:#ff7b7b;margin-left:8px">⚠️ Pas d\'email</small>'}</div>${a.role!=='super'?`<button class="btn-admin danger" onclick="delAd(${a.id})" style="padding:5px 12px;font-size:.7rem">🗑️ Supprimer</button>`:'<span style="color:var(--gold);font-size:.7rem">🔒 Super Admin</span>'}</div>`).join('')}
+function addAd(){const n=document.getElementById('newAdN').value.trim(),u=document.getElementById('newAdU').value.trim(),e=document.getElementById('newAdE').value.trim(),p=document.getElementById('newAdP').value;if(!n||!u||!p)return alert('⚠️ Tous les champs sont obligatoires.');if(D.admins.find(a=>a.username===u))return alert('❌ Ce nom d\'utilisateur existe déjà.');if(p.length<6)return alert('❌ Mot de passe : 6 caractères minimum.');D.admins.push({id:Date.now(),name:n,username:u,email:e,password:p,role:'admin',createdAt:new Date().toLocaleDateString('fr-FR')});save('admins',D.admins);['newAdN','newAdU','newAdE','newAdP'].forEach(id=>document.getElementById(id).value='');loadAd();alert('✅ Administrateur créé avec succès !')}
 function delAd(id){if(!confirm('Supprimer cet administrateur ?'))return;D.admins=D.admins.filter(a=>a.id!==id);save('admins',D.admins);loadAd()}
 
 // ============ INIT ============
 render();
-console.log('✅ Babos Photography - Site prêt !');
-console.log('📸 Clé API ImgBB configurée');
-console.log('🔑 Admin : admin / babos2025');
 </script>
 </body>
 </html>
