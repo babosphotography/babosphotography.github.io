@@ -473,6 +473,16 @@ async function submitBooking(e) {
             <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px">Un message WhatApp de confirmation vous sera envoyé.<br>Nous vous contacterons dans les <strong>24 heures</strong>.</p>
             <button class="btn btn-outline" onclick="resetBooking()" style="color:var(--navy);border-color:var(--navy);margin-top:12px">Réserver une autre séance</button>
         `;
+                // Rediriger vers le paiement si Wave ou OM choisi
+        if (b.payment === 'wave') {
+            setTimeout(() => {
+                window.open('https://pay.wave.com/m/M_sn__-wx4hCiTFSp/c/sn/', '_blank');
+            }, 2500);
+        } else if (b.payment === 'om') {
+            setTimeout(() => {
+                window.open('tel:*144%23', '_blank');
+            }, 2500);
+        }
 
         const adminMsg = encodeURIComponent(
             '📸 *NOUVELLE RÉSERVATION - BABOS PHOTOGRAPHY*\n\n' +
