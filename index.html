@@ -36,8 +36,12 @@
         .burger{display:none;cursor:pointer;flex-direction:column;gap:4px}
         .burger span{width:22px;height:2px;background:#fff}
         #navbar.scrolled .burger span{background:var(--navy)}
-        @media(max-width:768px){.nav-links{display:none}.burger{display:flex}}
-
+       @media(max-width:768px){
+    .nav-links{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--navy);flex-direction:column;align-items:center;justify-content:center;gap:25px;z-index:999}
+    .nav-links.open{display:flex}
+    .nav-links a{font-size:1.2rem;font-family:'Playfair Display',serif;text-transform:none;letter-spacing:1px}
+    .burger{display:flex;z-index:1001}
+}
        #hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(160deg,#0a1929,#1a3a5c);padding:100px 20px;position:relative}
 .hero-bg-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.15}
         .hero-content{position:relative;z-index:2}
@@ -173,7 +177,8 @@
 
 <nav id="navbar">
     <a href="#hero" class="logo">BABOS</a>
-    <ul class="nav-links" id="navLinks">
+  <ul class="nav-links" id="navLinks">
+    <li style="position:absolute;top:20px;right:20px;font-size:1.5rem;cursor:pointer;color:#fff" onclick="document.getElementById('navLinks').classList.remove('open')">✕</li>
         <li><a href="#about">À Propos</a></li><li><a href="#services">Services</a></li><li><a href="#gallery">Galerie</a></li><li><a href="#booking">Réserver</a></li><li><a href="#payment">Paiement</a></li><li><a href="#location">Localisation</a></li><li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-actions">
@@ -356,7 +361,15 @@ document.getElementById('servicesGrid').innerHTML = [
 
 // ============ NAVIGATION ============
 window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>50));
-document.getElementById('burgerBtn').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
+document.getElementById('burgerBtn').addEventListener('click',function(){
+    document.getElementById('navLinks').classList.toggle('open');
+    // Fermer le menu quand on clique sur un lien
+    document.querySelectorAll('#navLinks a').forEach(link => {
+        link.addEventListener('click', function() {
+            document.getElementById('navLinks').classList.remove('open');
+        });
+    });
+});
 
 // ============ MODAL ============
 const modal=document.getElementById('adminModal');
@@ -403,10 +416,10 @@ function renderPublicGallery() {
 
 // ============ BOOKING ============
 function selectPay(el){document.querySelectorAll('.payment-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected')}
-async function submitBooking(e){e.preventDefault();const b={name:document.getElementById('bName').value,phone:document.getElementById('bPhone').value,date:document.getElementById('bDate').value,type:document.getElementById('bType').value,payment:document.querySelector('input[name="payment"]:checked')?.value||'surplace',message:document.getElementById('bMsg').value,status:'Nouveau',createdAt:new Date().toISOString()};try{await db.collection('bookings').add(b);document.getElementById('bookingForm').style.display='none';document.getElementById('bookingSuccess').style.display='block';window.open(`https://wa.me/221781039065?text=${encodeURIComponent('Réservation: '+b.name+', Date: '+b.date)}`,'_blank')}catch(e){alert('Erreur.')}return false}
+async function submitBooking(e){e.preventDefault();const b={name:document.getElementById('bName').value,phone:document.getElementById('bPhone').value,date:document.getElementById('bDate').value,type:document.getElementById('bType').value,payment:document.querySelector('input[name="payment"]:checked')?.value||'surplace',message:document.getElementById('bMsg').value,status:'Nouveau',createdAt:new Date().toISOString()};try{await db.collection('bookings').add(b);document.getElementById('bookingForm').style.display='none';document.getElementById('bookingSuccess').style.display='block';window.open(`https://wa.me/221771826735?text=${encodeURIComponent('Réservation: '+b.name+', Date: '+b.date)}`,'_blank')}catch(e){alert('Erreur.')}return false}
 function resetBooking(){document.getElementById('bookingForm').style.display='block';document.getElementById('bookingForm').reset();document.getElementById('bookingSuccess').style.display='none';document.querySelector('.payment-opt').classList.add('selected')}
-function copyPhone(){navigator.clipboard.writeText('221781039065').then(()=>alert('✅ Numéro copié !'))}
-function sendContact(e){e.preventDefault();const n=document.getElementById('cName').value,em=document.getElementById('cEmail').value,m=document.getElementById('cMsg').value;window.open(`https://wa.me/221781039065?text=${encodeURIComponent('Message de '+n+' ('+em+'): '+m)}`,'_blank');alert('✅ Envoyé !');e.target.reset();return false}
+function copyPhone(){navigator.clipboard.writeText('221771826735').then(()=>alert('✅ Numéro copié !'))}
+function sendContact(e){e.preventDefault();const n=document.getElementById('cName').value,em=document.getElementById('cEmail').value,m=document.getElementById('cMsg').value;window.open(`https://wa.me/221771826735?text=${encodeURIComponent('Message de '+n+' ('+em+'): '+m)}`,'_blank');alert('✅ Envoyé !');e.target.reset();return false}
 
 // ============ ADMIN LOGIN ============
 document.getElementById('loginBtn').addEventListener('click',async()=>{const em=document.getElementById('adminEmail').value,pw=document.getElementById('adminPass').value;try{await auth.signInWithEmailAndPassword(em,pw);document.getElementById('adminLogin').style.display='none';document.getElementById('adminPanel').style.display='block';loadDashboard();switchTab('dashboard')}catch(e){document.getElementById('loginError').style.display='block';document.getElementById('loginError').textContent='❌ Identifiants incorrects'}});
@@ -641,19 +654,49 @@ function savePayment(){
 }
 
 // ============ RÉSEAUX ============
-function loadSocialEditor(){
-    const s=JSON.parse(localStorage.babos_social||'{}');
-    document.getElementById('e-instagram').value=s.instagram||'';
-    document.getElementById('e-facebook').value=s.facebook||'';
-    document.getElementById('e-whatsapp').value=s.whatsapp||'';
-    document.getElementById('e-tiktok').value=s.tiktok||'';
-    document.getElementById('e-youtube').value=s.youtube||'';
+async function loadSocialEditor(){
+    let s = {};
+    // Charger depuis Firestore d'abord
+    try {
+        const doc = await db.collection('settings').doc('socialLinks').get();
+        if (doc.exists) {
+            s = doc.data();
+        }
+    } catch(e) {
+        // Fallback au localStorage
+        s = JSON.parse(localStorage.babos_social || '{}');
+    }
+    
+    document.getElementById('e-instagram').value = s.instagram || '';
+    document.getElementById('e-facebook').value = s.facebook || '';
+    document.getElementById('e-whatsapp').value = s.whatsapp || '';
+    document.getElementById('e-tiktok').value = s.tiktok || '';
+    document.getElementById('e-youtube').value = s.youtube || '';
 }
 function saveSocial(){
-    localStorage.babos_social=JSON.stringify({instagram:document.getElementById('e-instagram').value,facebook:document.getElementById('e-facebook').value,whatsapp:document.getElementById('e-whatsapp').value,tiktok:document.getElementById('e-tiktok').value,youtube:document.getElementById('e-youtube').value});
-    alert('✅ Sauvegardé !');
+    const social = {
+        instagram: document.getElementById('e-instagram').value,
+        facebook: document.getElementById('e-facebook').value,
+        whatsapp: document.getElementById('e-whatsapp').value,
+        tiktok: document.getElementById('e-tiktok').value,
+        youtube: document.getElementById('e-youtube').value
+    };
+    
+    // Sauvegarder dans localStorage
+    localStorage.babos_social = JSON.stringify(social);
+    
+    // Sauvegarder dans Firestore (pour tous les admins)
+    db.collection('settings').doc('socialLinks').set(social);
+    
+    // Mettre à jour les liens du footer IMMÉDIATEMENT
+    const links = document.querySelectorAll('.social-links .social-link');
+    if (social.instagram && links[0]) links[0].href = social.instagram;
+    if (social.facebook && links[1]) links[1].href = social.facebook;
+    if (social.whatsapp && links[2]) links[2].href = social.whatsapp;
+    if (social.tiktok && links[3]) links[3].href = social.tiktok;
+    
+    alert('✅ Réseaux sociaux sauvegardés ! Les visiteurs peuvent maintenant cliquer sur les logos.');
 }
-
 // ============ ADMINS ============
 async function loadAdmins(){
     const c=document.getElementById('adminsList');
