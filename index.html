@@ -203,8 +203,7 @@
 
 <section id="booking" class="section"><p class="section-tag">Planifions</p><h2 class="section-title">Réserver une <em>Séance</em></h2><div class="section-line"></div><form id="bookingForm" class="booking-form" onsubmit="return submitBooking(event)"><div class="form-row"><div class="form-group"><label>Nom complet *</label><input type="text" id="bName" required></div><div class="form-group"><label>Téléphone *</label><input type="tel" id="bPhone" required></div></div><div class="form-row"><div class="form-group"><label>Date *</label><input type="date" id="bDate" required></div><div class="form-group"><label>Type *</label><select id="bType" required><option value="">Choisir...</option><option>Portrait</option><option>Famille</option><option>Mariage</option><option>Corporate</option><option>Maternité</option><option>Autre</option></select></div></div><div class="form-group"><label>Paiement *</label><div class="payment-options"><label class="payment-opt selected" onclick="selectPay(this)"><input type="radio" name="payment" value="wave" checked>📱 Wave</label><label class="payment-opt" onclick="selectPay(this)"><input type="radio" name="payment" value="om">📲 OM</label><label class="payment-opt" onclick="selectPay(this)"><input type="radio" name="payment" value="surplace">💵 Sur place</label></div></div><div class="form-group"><label>Message</label><textarea id="bMsg" rows="2"></textarea></div><button type="submit" class="btn btn-primary btn-full">📸 Confirmer</button></form><div id="bookingSuccess" style="display:none;text-align:center;padding:30px"><div style="font-size:3rem">🎉</div><h3>Réservation envoyée !</h3><p>Nous vous contacterons dans les 24h.</p><button class="btn btn-outline" onclick="resetBooking()" style="color:var(--navy);border-color:var(--navy)">Nouvelle</button></div></section>
 
-<section id="payment" class="section section-alt"><p class="section-tag">Moyens de paiement</p><h2 class="section-title">Payer <em>facilement</em></h2><div class="section-line"></div><p style="text-align:center;color:var(--text-light);margin-bottom:20px">Payez par Wave ou Orange Money.</p><div class="payment-cards"><div class="payment-card wave" onclick="window.open('https://pay.wave.com/m/M_sn__-wx4hCiTFSp/c/sn/','_blank')"><div class="pay-logo">W</div><div class="pay-name">Wave</div><div class="pay-number">+221 77 182 67 35</div><small style="font-size:0.7rem;color:var(--text-light);display:block;margin-top:4px">Cliquez pour payer avec Wave</small></div><div class="payment-card om" onclick="window.open('tel:*144%23','_blank')"><div class="pay-logo">OM</div><div class="pay-name">Orange Money</div><div class="pay-number">+221 77 182 67 35</div><small style="font-size:0.7rem;color:var(--text-light);display:block;margin-top:4px">Cliquez pour payer avec OM</small></div><div class="pay-logo">OM</div><div class="pay-name">Orange Money</div><div class="pay-number">+221 77 182 67 35</div></div></div></section>
-
+<section id="payment" class="section section-alt"><p class="section-tag">Moyens de paiement</p><h2 class="section-title">Payer <em>facilement</em></h2><div class="section-line"></div><p style="text-align:center;color:var(--text-light);margin-bottom:20px">Payez par Wave ou Orange Money.</p><div class="payment-cards"><div class="payment-card wave" onclick="window.open('https://pay.wave.com/m/M_sn__-wx4hCiTFSp/c/sn/','_blank')"><div class="pay-logo">W</div><div class="pay-name">Wave</div><div class="pay-number">+221 77 182 67 35</div><small style="font-size:0.7rem;color:var(--text-light);display:block;margin-top:4px">Cliquez pour payer avec Wave</small></div><div class="payment-card om" onclick="window.open('tel:*144%23','_blank')"><div class="pay-logo">OM</div><div class="pay-name">Orange Money</div><div class="pay-number">+221 77 182 67 35</div><small style="font-size:0.7rem;color:var(--text-light);display:block;margin-top:4px">Cliquez pour payer avec OM</small></div></div></section>
 <section id="location" class="section"><p class="section-tag">Où nous trouver</p><h2 class="section-title">Notre <em>Localisation</em></h2><div class="section-line"></div><p style="text-align:center;color:var(--text-light);margin-bottom:16px">📍 Studio Babos Photography, Thiès, Sénégal</p><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.5993658944396!2d-16.924309685170683!3d14.789428989676446!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTTCsDQ3JzIxLjkiTiAxNsKwNTUnMTkuNiJX!5e0!3m2!1sfr!2ssn!4v1699000000000" allowfullscreen="" loading="lazy"></iframe></div></section>
 
 <section id="contact" class="section section-dark"><div class="contact-grid"><div><p class="section-tag">Contact</p><h2 class="section-title">Parlons de <em>votre projet</em></h2><div class="section-line"></div><div class="contact-info"><div><i class="fas fa-map-marker-alt"></i><span>Studio Babos, Thiès</span></div><div><i class="fas fa-phone"></i><span>+221 77 182 67 35</span></div><div><i class="fas fa-envelope"></i><span>ndirstar94@gmail.com</span></div></div></div><form class="contact-form-box" onsubmit="return sendContact(event)"><input type="text" id="cName" placeholder="Votre nom" required><input type="email" id="cEmail" placeholder="Votre email" required><textarea id="cMsg" rows="3" placeholder="Message" required></textarea><button type="submit" class="btn btn-primary btn-full">✉️ Envoyer</button></form></div></section>
@@ -537,8 +536,32 @@ async function loadDashboard(){
     document.getElementById('statAlb').textContent=albums.length;
 }
 
-async function loadAdminBookings(){const c=document.getElementById('adminBookings');try{const s=await db.collection('bookings').orderBy('createdAt','desc').get();if(s.empty){c.innerHTML='<p style="color:#999;text-align:center;padding:16px">Aucune réservation.</p>';return}c.innerHTML='';s.forEach(d=>{const dt=d.data();c.innerHTML+=`<div><strong>${dt.name}</strong><br><small>📞 ${dt.phone} | 📅 ${dt.date} | 🎯 ${dt.type} | 💳 ${dt.payment}</small></div>`})}catch(e){}}
+async function loadAdminBookings(){
+    const c=document.getElementById('adminBookings');
+    try{
+        const s=await db.collection('bookings').orderBy('createdAt','desc').get();
+        if(s.empty){c.innerHTML='<p style="color:#999;text-align:center;padding:16px">Aucune réservation.</p>';return}
+        c.innerHTML='';
+        s.forEach(d=>{
+            const dt=d.data();
+            c.innerHTML+=`
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid #eee;border-radius:8px;margin-bottom:8px;font-size:.85rem">
+                <div>
+                    <strong>${dt.name}</strong><br>
+                    <small>📞 ${dt.phone} | 📅 ${dt.date} | 🎯 ${dt.type} | 💳 ${dt.payment}</small>
+                </div>
+                <button class="btn btn-sm btn-danger" onclick="deleteBooking('${d.id}')" style="padding:5px 10px;font-size:.7rem">🗑️</button>
+            </div>`;
+        });
+    }catch(e){}
+}
 
+async function deleteBooking(id){
+    if(!confirm('Supprimer cette réservation ?'))return;
+    await db.collection('bookings').doc(id).delete();
+    loadAdminBookings();
+    loadDashboard();
+}
 // ============ GESTION DES ALBUMS ============
 function updateAlbumSelects() {
     // Mettre à jour le select dans l'admin
