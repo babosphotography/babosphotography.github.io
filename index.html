@@ -135,6 +135,8 @@
         .social-link.facebook{background:#1877f2}
         .social-link.whatsapp{background:#25d366}
         .social-link.tiktok{background:#000;border:1px solid #333}
+        .social-link.youtube{background:#ff0000}
+        .social-link.email{background:#c9a96e}
 
         .whatsapp-float{position:fixed;bottom:20px;left:20px;z-index:500;width:50px;height:50px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(37,211,102,.4)}
 
@@ -207,7 +209,7 @@
 
 <section id="contact" class="section section-dark"><div class="contact-grid"><div><p class="section-tag">Contact</p><h2 class="section-title">Parlons de <em>votre projet</em></h2><div class="section-line"></div><div class="contact-info"><div><i class="fas fa-map-marker-alt"></i><span>Studio Babos, Thiès</span></div><div><i class="fas fa-phone"></i><span>+221 77 182 67 35</span></div><div><i class="fas fa-envelope"></i><span>ndirstar94@gmail.com</span></div></div></div><form class="contact-form-box" onsubmit="return sendContact(event)"><input type="text" id="cName" placeholder="Votre nom" required><input type="email" id="cEmail" placeholder="Votre email" required><textarea id="cMsg" rows="3" placeholder="Message" required></textarea><button type="submit" class="btn btn-primary btn-full">✉️ Envoyer</button></form></div></section>
 
-<footer><span class="footer-logo">BABOS PHOTOGRAPHY</span><div class="social-links"><a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a><a href="#" class="social-link facebook"><i class="fab fa-facebook"></i></a><a href="#" class="social-link whatsapp"><i class="fab fa-whatsapp"></i></a><a href="#" class="social-link tiktok"><i class="fab fa-tiktok"></i></a></div><p>&copy; 2025 Babos Photography · Thiès - Médina Fall</p></footer>
+<footer><span class="footer-logo">BABOS PHOTOGRAPHY</span><div class="social-links"><a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a><a href="#" class="social-link facebook"><i class="fab fa-facebook"></i></a><a href="#" class="social-link whatsapp"><i class="fab fa-whatsapp"></i></a><a href="#" class="social-link tiktok"><i class="fab fa-tiktok"></i></a><a href="#" class="social-link youtube"><i class="fab fa-youtube"></i></a><a href="mailto:ndirstar94@gmail.com" class="social-link email"><i class="fas fa-envelope"></i></a></div><p>&copy; 2025 Babos Photography · Thiès - Médina Fall</p></footer>
 
 <a href="https://wa.me/221771826735" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
@@ -418,7 +420,21 @@ function renderPublicGallery() {
 function selectPay(el){document.querySelectorAll('.payment-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected')}
 async function submitBooking(e){e.preventDefault();const b={name:document.getElementById('bName').value,phone:document.getElementById('bPhone').value,date:document.getElementById('bDate').value,type:document.getElementById('bType').value,payment:document.querySelector('input[name="payment"]:checked')?.value||'surplace',message:document.getElementById('bMsg').value,status:'Nouveau',createdAt:new Date().toISOString()};try{await db.collection('bookings').add(b);document.getElementById('bookingForm').style.display='none';document.getElementById('bookingSuccess').style.display='block';window.open(`https://wa.me/221771826735?text=${encodeURIComponent('Réservation: '+b.name+', Date: '+b.date)}`,'_blank')}catch(e){alert('Erreur.')}return false}
 function resetBooking(){document.getElementById('bookingForm').style.display='block';document.getElementById('bookingForm').reset();document.getElementById('bookingSuccess').style.display='none';document.querySelector('.payment-opt').classList.add('selected')}
-function copyPhone(){navigator.clipboard.writeText('221771826735').then(()=>alert('✅ Numéro copié !'))}
+async function copyPhone(){
+    let phoneNumber = '221771826735';
+    try {
+        const doc = await db.collection('settings').doc('paymentInfo').get();
+        if (doc.exists && doc.data().waveNum) {
+            phoneNumber = doc.data().waveNum.replace(/[\+\s]/g, '');
+        }
+    } catch(e) {
+        const p = JSON.parse(localStorage.babos_payment || '{}');
+        if (p.waveNum) phoneNumber = p.waveNum.replace(/[\+\s]/g, '');
+    }
+    navigator.clipboard.writeText(phoneNumber).then(() => 
+        alert('✅ Numéro copié : ' + phoneNumber + '\n\nOuvrez Wave ou Orange Money pour payer.')
+    );
+}
 function sendContact(e){e.preventDefault();const n=document.getElementById('cName').value,em=document.getElementById('cEmail').value,m=document.getElementById('cMsg').value;window.open(`https://wa.me/221771826735?text=${encodeURIComponent('Message de '+n+' ('+em+'): '+m)}`,'_blank');alert('✅ Envoyé !');e.target.reset();return false}
 
 // ============ ADMIN LOGIN ============
@@ -649,10 +665,22 @@ function loadPaymentEditor(){
     document.getElementById('e-omLink').value=p.omLink||'';
 }
 function savePayment(){
-    localStorage.babos_payment=JSON.stringify({waveNum:document.getElementById('e-waveNum').value,waveLink:document.getElementById('e-waveLink').value,omNum:document.getElementById('e-omNum').value,omLink:document.getElementById('e-omLink').value});
-    alert('✅ Sauvegardé !');
+    const payment = {
+        waveNum: document.getElementById('e-waveNum').value,
+        waveLink: document.getElementById('e-waveLink').value,
+        omNum: document.getElementById('e-omNum').value,
+        omLink: document.getElementById('e-omLink').value
+    };
+    // Sauvegarder dans localStorage
+    localStorage.babos_payment = JSON.stringify(payment);
+    // Sauvegarder dans Firestore
+    db.collection('settings').doc('paymentInfo').set(payment);
+    // Mettre à jour l'affichage immédiatement
+    const payNumbers = document.querySelectorAll('.pay-number');
+    if (payment.waveNum && payNumbers[0]) payNumbers[0].textContent = payment.waveNum;
+    if (payment.omNum && payNumbers[1]) payNumbers[1].textContent = payment.omNum;
+    alert('✅ Paiement sauvegardé ! Les visiteurs verront les nouveaux numéros.');
 }
-
 // ============ RÉSEAUX ============
 async function loadSocialEditor(){
     let s = {};
@@ -694,7 +722,8 @@ function saveSocial(){
     if (social.facebook && links[1]) links[1].href = social.facebook;
     if (social.whatsapp && links[2]) links[2].href = social.whatsapp;
     if (social.tiktok && links[3]) links[3].href = social.tiktok;
-    
+    if (social.youtube && links[4]) links[4].href = social.youtube;
+    // L'email n'est pas modifiable via l'admin, il reste en dur
     alert('✅ Réseaux sociaux sauvegardés ! Les visiteurs peuvent maintenant cliquer sur les logos.');
 }
 // ============ ADMINS ============
@@ -732,6 +761,40 @@ async function loadSiteConfig() {
             if (c.aboutText) {
                 document.querySelector('#about .about-text p').innerHTML = c.aboutText;
             }
+            // Coordonnées
+            if (c.phone) {
+                const phoneEls = document.querySelectorAll('.contact-info div:nth-child(2) span');
+                phoneEls.forEach(el => el.textContent = c.phone);
+            }
+            if (c.email) {
+                const emailEls = document.querySelectorAll('.contact-info div:nth-child(3) span');
+                emailEls.forEach(el => el.textContent = c.email);
+            }
+            if (c.address) {
+                const addrEls = document.querySelectorAll('.contact-info div:nth-child(1) span');
+                addrEls.forEach(el => el.textContent = c.address);
+            }
+        }
+        
+        // Charger les liens réseaux sociaux
+        const socialDoc = await db.collection('settings').doc('socialLinks').get();
+        if (socialDoc.exists) {
+            const s = socialDoc.data();
+            const links = document.querySelectorAll('.social-links .social-link');
+            if (s.instagram && links[0]) links[0].href = s.instagram;
+            if (s.facebook && links[1]) links[1].href = s.facebook;
+            if (s.whatsapp && links[2]) links[2].href = s.whatsapp;
+            if (s.tiktok && links[3]) links[3].href = s.tiktok;
+            if (s.youtube && links[4]) links[4].href = s.youtube;
+        }
+        
+        // Charger les numéros de paiement
+        const paymentDoc = await db.collection('settings').doc('paymentInfo').get();
+        if (paymentDoc.exists) {
+            const p = paymentDoc.data();
+            const payNumbers = document.querySelectorAll('.pay-number');
+            if (p.waveNum && payNumbers[0]) payNumbers[0].textContent = p.waveNum;
+            if (p.omNum && payNumbers[1]) payNumbers[1].textContent = p.omNum;
         }
     } catch(e) {
         const c = JSON.parse(localStorage.babos_config || '{}');
@@ -741,6 +804,14 @@ async function loadSiteConfig() {
         if (c.aboutImg) {
             document.querySelector('#about .about-img img').src = c.aboutImg;
         }
+        // Fallback réseaux
+        const s = JSON.parse(localStorage.babos_social || '{}');
+        const links = document.querySelectorAll('.social-links .social-link');
+        if (s.instagram && links[0]) links[0].href = s.instagram;
+        if (s.facebook && links[1]) links[1].href = s.facebook;
+        if (s.whatsapp && links[2]) links[2].href = s.whatsapp;
+        if (s.tiktok && links[3]) links[3].href = s.tiktok;
+        if (s.youtube && links[4]) links[4].href = s.youtube;
     }
 }
 
