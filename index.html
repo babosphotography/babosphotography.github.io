@@ -420,11 +420,35 @@ function renderPublicGallery() {
 function selectPay(el){document.querySelectorAll('.payment-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected')}
 async function submitBooking(e) {
     e.preventDefault();
+    
+    const name = document.getElementById('bName').value.trim();
+    const phone = document.getElementById('bPhone').value.trim();
+    const date = document.getElementById('bDate').value;
+    const type = document.getElementById('bType').value;
+    
+    // 🔒 VÉRIFICATIONS
+    if (!name) {
+        alert('⚠️ Veuillez entrer votre nom complet.');
+        return false;
+    }
+    if (!/^[0-9+\s]{9,}$/.test(phone)) {
+        alert('⚠️ Veuillez entrer un numéro de téléphone valide (chiffres uniquement, au moins 9 caractères).');
+        return false;
+    }
+    if (!date) {
+        alert('⚠️ Veuillez choisir une date.');
+        return false;
+    }
+    if (!type) {
+        alert('⚠️ Veuillez choisir un type de séance.');
+        return false;
+    }
+    
     const b = {
-        name: document.getElementById('bName').value,
-        phone: document.getElementById('bPhone').value,
-        date: document.getElementById('bDate').value,
-        type: document.getElementById('bType').value,
+        name: name,
+        phone: phone,
+        date: date,
+        type: type,
         payment: document.querySelector('input[name="payment"]:checked')?.value || 'surplace',
         message: document.getElementById('bMsg').value,
         status: 'Nouveau',
@@ -439,18 +463,17 @@ async function submitBooking(e) {
         document.getElementById('bookingSuccess').innerHTML = `
             <div style="font-size:3rem;margin-bottom:16px">✨</div>
             <h3 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);margin-bottom:8px">Merci, ${b.name.split(' ')[0]} !</h3>
-            <p style="color:var(--text-light);font-size:1rem;margin-bottom:20px">Votre séance photo est réservée avec succès.</p>
+            <p style="color:var(--text-light);font-size:1rem;margin-bottom:20px">Félicitations 💐 !Votre séance photo est réservée avec succès.</p>
             <div style="background:var(--off);padding:20px;border-radius:12px;margin-bottom:20px;text-align:left;max-width:350px;margin:0 auto 20px">
                 <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">📅 <strong>${formatDate(b.date)}</strong></p>
                 <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">🎯 ${b.type}</p>
                 <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">💳 ${b.payment === 'wave' ? 'Wave' : b.payment === 'om' ? 'Orange Money' : 'Sur place'}</p>
                 <p style="font-size:0.85rem;color:var(--text-light)">📍 Studio Babos, Thiès</p>
             </div>
-            <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px">Un email de confirmation vous sera envoyé.<br>Nous vous contacterons dans les <strong>24 heures</strong>.</p>
+            <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px">Un message WhatApp de confirmation vous sera envoyé.<br>Nous vous contacterons dans les <strong>24 heures</strong>.</p>
             <button class="btn btn-outline" onclick="resetBooking()" style="color:var(--navy);border-color:var(--navy);margin-top:12px">Réserver une autre séance</button>
         `;
 
-        // WhatsApp POUR L'ADMIN UNIQUEMENT
         const adminMsg = encodeURIComponent(
             '📸 *NOUVELLE RÉSERVATION - BABOS PHOTOGRAPHY*\n\n' +
             '👤 *Client :* ' + b.name + '\n' +
@@ -468,7 +491,6 @@ async function submitBooking(e) {
     }
     return false;
 }
-
 function formatDate(dateStr) {
     if (!dateStr) return '';
     const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
