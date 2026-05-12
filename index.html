@@ -585,19 +585,13 @@ function saveContent(){
         hours: document.getElementById('e-hours').value
     };
     
-    // Sauvegarder dans localStorage (pour vous)
+    // Sauvegarder dans localStorage
     localStorage.babos_config = JSON.stringify(config);
     
     // Sauvegarder dans Firestore (pour TOUS les visiteurs)
-    db.collection('settings').doc('siteConfig').set(config)
-        .then(() => {
-            console.log('✅ Config sauvegardée dans Firestore');
-        })
-        .catch(err => {
-            console.error('Erreur Firestore:', err);
-        });
+    db.collection('settings').doc('siteConfig').set(config);
     
-    // Appliquer immédiatement
+    // Appliquer immédiatement - IMAGE HERO
     if (config.heroBg) {
         document.getElementById('heroBgImg').style.backgroundImage = `url('${config.heroBg}')`;
     }
@@ -606,6 +600,28 @@ function saveContent(){
     }
     if (config.heroTagline) {
         document.querySelector('.hero-subtitle').textContent = config.heroTagline;
+    }
+    
+    // Appliquer immédiatement - IMAGE À PROPOS
+    if (config.aboutImg) {
+        document.querySelector('#about .about-img img').src = config.aboutImg;
+    }
+    if (config.aboutText) {
+        document.querySelector('#about .about-text p').innerHTML = config.aboutText;
+    }
+    
+    // Appliquer immédiatement - COORDONNÉES
+    if (config.phone) {
+        const phoneEls = document.querySelectorAll('.contact-info div:nth-child(2) span');
+        phoneEls.forEach(el => el.textContent = config.phone);
+    }
+    if (config.email) {
+        const emailEls = document.querySelectorAll('.contact-info div:nth-child(3) span');
+        emailEls.forEach(el => el.textContent = config.email);
+    }
+    if (config.address) {
+        const addrEls = document.querySelectorAll('.contact-info div:nth-child(1) span');
+        addrEls.forEach(el => el.textContent = config.address);
     }
     
     alert('✅ Contenu sauvegardé ! Tous les visiteurs verront les changements.');
@@ -656,6 +672,7 @@ async function loadSiteConfig() {
         const doc = await db.collection('settings').doc('siteConfig').get();
         if (doc.exists) {
             const c = doc.data();
+            // Image Hero
             if (c.heroBg) {
                 document.getElementById('heroBgImg').style.backgroundImage = `url('${c.heroBg}')`;
             }
@@ -665,12 +682,21 @@ async function loadSiteConfig() {
             if (c.heroTagline) {
                 document.querySelector('.hero-subtitle').textContent = c.heroTagline;
             }
+            // Image À propos
+            if (c.aboutImg) {
+                document.querySelector('#about .about-img img').src = c.aboutImg;
+            }
+            if (c.aboutText) {
+                document.querySelector('#about .about-text p').innerHTML = c.aboutText;
+            }
         }
     } catch(e) {
-        // Fallback au localStorage
         const c = JSON.parse(localStorage.babos_config || '{}');
         if (c.heroBg) {
             document.getElementById('heroBgImg').style.backgroundImage = `url('${c.heroBg}')`;
+        }
+        if (c.aboutImg) {
+            document.querySelector('#about .about-img img').src = c.aboutImg;
         }
     }
 }
