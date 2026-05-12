@@ -415,9 +415,9 @@ function renderPublicGallery() {
         `<div class="gallery-item"><img src="${p.url}" alt="${p.caption||''}" loading="lazy"></div>`
     ).join('');
 }
-
 // ============ BOOKING ============
 function selectPay(el){document.querySelectorAll('.payment-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected')}
+
 async function submitBooking(e) {
     e.preventDefault();
     
@@ -472,99 +472,24 @@ async function submitBooking(e) {
             '💬 *Message :* ' + (b.message || 'Aucun') + '\n\n' +
             '✅ *Merci de confirmer rapidement.*'
         );
-        
-        // Ouvrir WhatsApp discrètement (en arrière-plan)
         const wa = window.open('https://wa.me/221771826735?text=' + adminMsg, 'whatsapp_admin');
-        if (wa) {
-            setTimeout(() => { wa.blur(); window.focus(); }, 500);
-        }
+        if (wa) { setTimeout(() => { wa.blur(); window.focus(); }, 500); }
 
     } catch (e) {
         alert('Erreur. Réessayez.');
     }
     return false;
 }
-    
-    const b = {
-        name: name,
-        phone: phone,
-        date: date,
-        type: type,
-        payment: document.querySelector('input[name="payment"]:checked')?.value || 'surplace',
-        message: document.getElementById('bMsg').value,
-        status: 'Nouveau',
-        createdAt: new Date().toISOString()
-    };
 
-    try {
-        await db.collection('bookings').add(b);
-        
-        document.getElementById('bookingForm').style.display = 'none';
-        document.getElementById('bookingSuccess').style.display = 'block';
-        document.getElementById('bookingSuccess').innerHTML = `
-            <div style="font-size:3rem;margin-bottom:16px">✨</div>
-            <h3 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);margin-bottom:8px">Merci, ${b.name.split(' ')[0]} !</h3>
-            <p style="color:var(--text-light);font-size:1rem;margin-bottom:20px">Félicitations 💐 ! Votre séance photo est réservée avec succès.</p>
-            <div style="background:var(--off);padding:20px;border-radius:12px;margin-bottom:20px;text-align:left;max-width:350px;margin:0 auto 20px">
-                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">📅 <strong>${formatDate(b.date)}</strong></p>
-                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">🎯 ${b.type}</p>
-                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">💳 ${b.payment === 'wave' ? 'Wave' : b.payment === 'om' ? 'Orange Money' : 'Sur place'}</p>
-                <p style="font-size:0.85rem;color:var(--text-light)">📍 Studio Babos, Thiès</p>
-            </div>
-            <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px">Un message WhatApp de confirmation vous sera envoyé.<br>Nous vous contacterons dans les <strong>24 heures</strong>.</p>
-            <button class="btn btn-outline" onclick="resetBooking()" style="color:var(--navy);border-color:var(--navy);margin-top:12px">Réserver une autre séance</button>
-               `;
-
-        // Rediriger vers le paiement si Wave ou OM choisi
-        if (b.payment === 'wave') {
-            setTimeout(() => {
-                const payWindow = window.open('https://pay.wave.com/m/M_sn__-wx4hCiTFSp/c/sn/', '_blank');
-                if (!payWindow) {
-                    const link = document.createElement('a');
-                    link.href = 'https://pay.wave.com/m/M_sn__-wx4hCiTFSp/c/sn/';
-                    link.target = '_blank';
-                    link.textContent = '👉 Cliquez ici pour payer avec Wave';
-                    link.style.cssText = 'display:block;margin-top:12px;padding:12px;background:#ff9900;color:#fff;text-align:center;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.9rem';
-                    document.getElementById('bookingSuccess').appendChild(link);
-                }
-            }, 2500);
-        } else if (b.payment === 'om') {
-            setTimeout(() => {
-                const payWindow = window.open('tel:*144%23', '_blank');
-                if (!payWindow) {
-                    const link = document.createElement('a');
-                    link.href = 'tel:*144%23';
-                    link.textContent = '📲 Appuyez pour payer avec Orange Money';
-                    link.style.cssText = 'display:block;margin-top:12px;padding:12px;background:#ff6600;color:#fff;text-align:center;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.9rem';
-                    document.getElementById('bookingSuccess').appendChild(link);
-                }
-            }, 2500);
-        }
-
-        const adminMsg = encodeURIComponent(
-            '📸 *NOUVELLE RÉSERVATION - BABOS PHOTOGRAPHY*\n\n' +
-            '👤 *Client :* ' + b.name + '\n' +
-            '📞 *Téléphone :* ' + b.phone + '\n' +
-            '📅 *Date :* ' + b.date + '\n' +
-            '🎯 *Type :* ' + b.type + '\n' +
-            '💳 *Paiement :* ' + (b.payment === 'wave' ? 'Wave 📱' : b.payment === 'om' ? 'Orange Money 📲' : 'Sur place 💵') + '\n' +
-            '💬 *Message :* ' + (b.message || 'Aucun') + '\n\n' +
-            '✅ *Merci de confirmer rapidement.*'
-        );
-        window.open('https://wa.me/221771826735?text=' + adminMsg, '_blank');
-
-    } catch (e) {
-        alert('Erreur. Réessayez.');
-    }
-    return false;
-}
 function formatDate(dateStr) {
     if (!dateStr) return '';
     const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
     const d = new Date(dateStr);
     return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
 }
+
 function resetBooking(){document.getElementById('bookingForm').style.display='block';document.getElementById('bookingForm').reset();document.getElementById('bookingSuccess').style.display='none';document.querySelector('.payment-opt').classList.add('selected')}
+
 async function copyPhone(){
     let phoneNumber = '221771826735';
     try {
@@ -580,7 +505,8 @@ async function copyPhone(){
         alert('✅ Numéro copié : ' + phoneNumber + '\n\nOuvrez Wave ou Orange Money pour payer.')
     );
 }
-function sendContact(e){e.preventDefault();const n=document.getElementById('cName').value,em=document.getElementById('cEmail').value,m=document.getElementById('cMsg').value;window.open(`https://wa.me/221771826735?text=${encodeURIComponent('Message de '+n+' ('+em+'): '+m)}`,'_blank');alert('✅ Envoyé !');e.target.reset();return false}
+
+function sendContact(e){e.preventDefault();const n=document.getElementById('cName').value,em=document.getElementById('cEmail').value,m=document.getElementById('cMsg').value;window.open('https://wa.me/221771826735?text='+encodeURIComponent('Message de '+n+' ('+em+'): '+m),'_blank');alert('✅ Envoyé !');e.target.reset();return false}
 
 // ============ ADMIN LOGIN ============
 document.getElementById('loginBtn').addEventListener('click',async()=>{const em=document.getElementById('adminEmail').value,pw=document.getElementById('adminPass').value;try{await auth.signInWithEmailAndPassword(em,pw);document.getElementById('adminLogin').style.display='none';document.getElementById('adminPanel').style.display='block';loadDashboard();switchTab('dashboard')}catch(e){document.getElementById('loginError').style.display='block';document.getElementById('loginError').textContent='❌ Identifiants incorrects'}});
