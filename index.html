@@ -439,17 +439,18 @@ async function submitBooking(e) {
         document.getElementById('bookingSuccess').innerHTML = `
             <div style="font-size:3rem;margin-bottom:16px">✨</div>
             <h3 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);margin-bottom:8px">Merci, ${b.name.split(' ')[0]} !</h3>
-            <p style="color:var(--text-light);font-size:1rem;margin-bottom:20px">Félicitation 🎉 ! Votre séance photo est réservée avec succès.</p>
+            <p style="color:var(--text-light);font-size:1rem;margin-bottom:20px">Votre séance photo est réservée avec succès.</p>
             <div style="background:var(--off);padding:20px;border-radius:12px;margin-bottom:20px;text-align:left;max-width:350px;margin:0 auto 20px">
                 <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">📅 <strong>${formatDate(b.date)}</strong></p>
                 <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">🎯 ${b.type}</p>
                 <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">💳 ${b.payment === 'wave' ? 'Wave' : b.payment === 'om' ? 'Orange Money' : 'Sur place'}</p>
                 <p style="font-size:0.85rem;color:var(--text-light)">📍 Studio Babos, Thiès</p>
             </div>
-            <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px">Un message WhatsApp de confirmation vous sera envoyé.<br>Nous vous contacterons dans les <strong>24 heures</strong>.</p>
+            <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px">Un email de confirmation vous sera envoyé.<br>Nous vous contacterons dans les <strong>24 heures</strong>.</p>
             <button class="btn btn-outline" onclick="resetBooking()" style="color:var(--navy);border-color:var(--navy);margin-top:12px">Réserver une autre séance</button>
         `;
 
+        // WhatsApp POUR L'ADMIN UNIQUEMENT
         const adminMsg = encodeURIComponent(
             '📸 *NOUVELLE RÉSERVATION - BABOS PHOTOGRAPHY*\n\n' +
             '👤 *Client :* ' + b.name + '\n' +
