@@ -549,33 +549,55 @@ document.getElementById('photoUpload').addEventListener('change', async function
 });
 
 // ============ CONTENU ============
-function loadContentEditor(){
-    const c=JSON.parse(localStorage.babos_config||'{}');
-    document.getElementById('e-heroBg').value=c.heroBg||'';
-    document.getElementById('e-heroLocation').value=c.heroLocation||'';
-    document.getElementById('e-heroTagline').value=c.heroTagline||'';
-    document.getElementById('e-aboutText').value=c.aboutText||'';
-    document.getElementById('e-aboutImg').value=c.aboutImg||'';
-    document.getElementById('e-phone').value=c.phone||'';
-    document.getElementById('e-email').value=c.email||'';
-    document.getElementById('e-address').value=c.address||'';
-    document.getElementById('e-hours').value=c.hours||'';
+async function loadContentEditor(){
+    // Charger depuis Firestore d'abord (pour avoir la dernière version)
+    let c = {};
+    try {
+        const doc = await db.collection('settings').doc('siteConfig').get();
+        if (doc.exists) {
+            c = doc.data();
+        }
+    } catch(e) {
+        // Si Firestore échoue, utiliser localStorage
+        c = JSON.parse(localStorage.babos_config || '{}');
+    }
+    
+    document.getElementById('e-heroBg').value = c.heroBg || 'https://i.imgur.com/gS3wKmG.jpg';
+    document.getElementById('e-heroLocation').value = c.heroLocation || "📍 Studio Professionnel · Thiès";
+    document.getElementById('e-heroTagline').value = c.heroTagline || "Capturer l'instant. Révéler l'émotion.";
+    document.getElementById('e-aboutText').value = c.aboutText || '';
+    document.getElementById('e-aboutImg').value = c.aboutImg || '';
+    document.getElementById('e-phone').value = c.phone || '';
+    document.getElementById('e-email').value = c.email || '';
+    document.getElementById('e-address').value = c.address || '';
+    document.getElementById('e-hours').value = c.hours || '';
 }
 function saveContent(){
     const config = {
-        heroBg:document.getElementById('e-heroBg').value,
-        heroLocation:document.getElementById('e-heroLocation').value,
-        heroTagline:document.getElementById('e-heroTagline').value,
-        aboutText:document.getElementById('e-aboutText').value,
-        aboutImg:document.getElementById('e-aboutImg').value,
-        phone:document.getElementById('e-phone').value,
-        email:document.getElementById('e-email').value,
-        address:document.getElementById('e-address').value,
-        hours:document.getElementById('e-hours').value
+        heroBg: document.getElementById('e-heroBg').value,
+        heroLocation: document.getElementById('e-heroLocation').value,
+        heroTagline: document.getElementById('e-heroTagline').value,
+        aboutText: document.getElementById('e-aboutText').value,
+        aboutImg: document.getElementById('e-aboutImg').value,
+        phone: document.getElementById('e-phone').value,
+        email: document.getElementById('e-email').value,
+        address: document.getElementById('e-address').value,
+        hours: document.getElementById('e-hours').value
     };
+    
+    // Sauvegarder dans localStorage (pour vous)
     localStorage.babos_config = JSON.stringify(config);
     
-    // Appliquer immédiatement les changements
+    // Sauvegarder dans Firestore (pour TOUS les visiteurs)
+    db.collection('settings').doc('siteConfig').set(config)
+        .then(() => {
+            console.log('✅ Config sauvegardée dans Firestore');
+        })
+        .catch(err => {
+            console.error('Erreur Firestore:', err);
+        });
+    
+    // Appliquer immédiatement
     if (config.heroBg) {
         document.getElementById('heroBgImg').style.backgroundImage = `url('${config.heroBg}')`;
     }
@@ -585,23 +607,8 @@ function saveContent(){
     if (config.heroTagline) {
         document.querySelector('.hero-subtitle').textContent = config.heroTagline;
     }
-    if (config.aboutText) {
-        document.querySelector('#about .about-text p').innerHTML = config.aboutText;
-    }
-    if (config.aboutImg) {
-        document.querySelector('#about .about-img img').src = config.aboutImg;
-    }
-    if (config.phone) {
-        document.querySelector('.contact-info div:nth-child(2) span').textContent = config.phone;
-    }
-    if (config.email) {
-        document.querySelector('.contact-info div:nth-child(3) span').textContent = config.email;
-    }
-    if (config.address) {
-        document.querySelector('.contact-info div:nth-child(1) span').textContent = config.address;
-    }
     
-    alert('✅ Contenu sauvegardé et appliqué ! Rafraîchissez la page si besoin.');
+    alert('✅ Contenu sauvegardé ! Tous les visiteurs verront les changements.');
 }
 
 // ============ PAIEMENT ============
@@ -644,7 +651,32 @@ function loadProfile(){const u=auth.currentUser;if(!u)return;document.getElement
 function updateProfile(){const u=auth.currentUser;if(!u)return;const np1=document.getElementById('profNP1').value,np2=document.getElementById('profNP2').value,op=document.getElementById('profOP').value,m=document.getElementById('profMsg');if(np1&&np1!==np2){m.style.display='block';m.style.color='#e74c3c';m.textContent='❌ Mots de passe différents';return}if(np1&&np1.length<6){m.style.display='block';m.style.color='#e74c3c';m.textContent='❌ 6 caractères min';return}if(np1){const c=firebase.auth.EmailAuthProvider.credential(u.email,op);u.reauthenticateWithCredential(c).then(()=>u.updatePassword(np1)).then(()=>{m.style.display='block';m.style.color='green';m.textContent='✅ Mis à jour !'}).catch(()=>{m.style.display='block';m.style.color='#e74c3c';m.textContent='❌ Mot de passe actuel incorrect'})}document.getElementById('profOP').value='';document.getElementById('profNP1').value='';document.getElementById('profNP2').value=''}
 
 // ============ INIT ============
+async function loadSiteConfig() {
+    try {
+        const doc = await db.collection('settings').doc('siteConfig').get();
+        if (doc.exists) {
+            const c = doc.data();
+            if (c.heroBg) {
+                document.getElementById('heroBgImg').style.backgroundImage = `url('${c.heroBg}')`;
+            }
+            if (c.heroLocation) {
+                document.getElementById('heroTagEl').textContent = c.heroLocation;
+            }
+            if (c.heroTagline) {
+                document.querySelector('.hero-subtitle').textContent = c.heroTagline;
+            }
+        }
+    } catch(e) {
+        // Fallback au localStorage
+        const c = JSON.parse(localStorage.babos_config || '{}');
+        if (c.heroBg) {
+            document.getElementById('heroBgImg').style.backgroundImage = `url('${c.heroBg}')`;
+        }
+    }
+}
+
 async function init() {
+    await loadSiteConfig();
     await loadAlbums();
     await loadAllPhotos();
     renderPublicGallery();
