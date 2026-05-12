@@ -418,7 +418,7 @@ function renderPublicGallery() {
 
 // ============ BOOKING ============
 function selectPay(el){document.querySelectorAll('.payment-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected')}
-async function submitBooking(e){
+async function submitBooking(e) {
     e.preventDefault();
     const b = {
         name: document.getElementById('bName').value,
@@ -430,13 +430,27 @@ async function submitBooking(e){
         status: 'Nouveau',
         createdAt: new Date().toISOString()
     };
+
     try {
         await db.collection('bookings').add(b);
+        
         document.getElementById('bookingForm').style.display = 'none';
         document.getElementById('bookingSuccess').style.display = 'block';
-        
-        // Message WhatsApp amélioré
-        const waMsg = encodeURIComponent(
+        document.getElementById('bookingSuccess').innerHTML = `
+            <div style="font-size:3rem;margin-bottom:16px">✨</div>
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);margin-bottom:8px">Merci, ${b.name.split(' ')[0]} !</h3>
+            <p style="color:var(--text-light);font-size:1rem;margin-bottom:20px">Félicitation 🎉 ! Votre séance photo est réservée avec succès.</p>
+            <div style="background:var(--off);padding:20px;border-radius:12px;margin-bottom:20px;text-align:left;max-width:350px;margin:0 auto 20px">
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">📅 <strong>${formatDate(b.date)}</strong></p>
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">🎯 ${b.type}</p>
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:8px">💳 ${b.payment === 'wave' ? 'Wave' : b.payment === 'om' ? 'Orange Money' : 'Sur place'}</p>
+                <p style="font-size:0.85rem;color:var(--text-light)">📍 Studio Babos, Thiès</p>
+            </div>
+            <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px">Un message WhatsApp de confirmation vous sera envoyé.<br>Nous vous contacterons dans les <strong>24 heures</strong>.</p>
+            <button class="btn btn-outline" onclick="resetBooking()" style="color:var(--navy);border-color:var(--navy);margin-top:12px">Réserver une autre séance</button>
+        `;
+
+        const adminMsg = encodeURIComponent(
             '📸 *NOUVELLE RÉSERVATION - BABOS PHOTOGRAPHY*\n\n' +
             '👤 *Client :* ' + b.name + '\n' +
             '📞 *Téléphone :* ' + b.phone + '\n' +
@@ -446,12 +460,19 @@ async function submitBooking(e){
             '💬 *Message :* ' + (b.message || 'Aucun') + '\n\n' +
             '✅ *Merci de confirmer rapidement.*'
         );
-        window.open('https://wa.me/221771826735?text=' + waMsg, '_blank');
-        
-    } catch(e) {
+        window.open('https://wa.me/221771826735?text=' + adminMsg, '_blank');
+
+    } catch (e) {
         alert('Erreur. Réessayez.');
     }
     return false;
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const d = new Date(dateStr);
+    return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
 }
 function resetBooking(){document.getElementById('bookingForm').style.display='block';document.getElementById('bookingForm').reset();document.getElementById('bookingSuccess').style.display='none';document.querySelector('.payment-opt').classList.add('selected')}
 async function copyPhone(){
@@ -691,12 +712,18 @@ function saveContent(){
 }
 
 // ============ PAIEMENT ============
-function loadPaymentEditor(){
-    const p=JSON.parse(localStorage.babos_payment||'{}');
-    document.getElementById('e-waveNum').value=p.waveNum||'';
-    document.getElementById('e-waveLink').value=p.waveLink||'';
-    document.getElementById('e-omNum').value=p.omNum||'';
-    document.getElementById('e-omLink').value=p.omLink||'';
+async function loadPaymentEditor(){
+    let p = {};
+    try {
+        const doc = await db.collection('settings').doc('paymentInfo').get();
+        if (doc.exists) p = doc.data();
+    } catch(e) {
+        p = JSON.parse(localStorage.babos_payment || '{}');
+    }
+    document.getElementById('e-waveNum').value = p.waveNum || '';
+    document.getElementById('e-waveLink').value = p.waveLink || '';
+    document.getElementById('e-omNum').value = p.omNum || '';
+    document.getElementById('e-omLink').value = p.omLink || '';
 }
 function savePayment(){
     const payment = {
