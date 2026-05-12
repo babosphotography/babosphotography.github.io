@@ -472,15 +472,31 @@ async function submitBooking(e) {
             </div>
             <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px">Un message WhatApp de confirmation vous sera envoyé.<br>Nous vous contacterons dans les <strong>24 heures</strong>.</p>
             <button class="btn btn-outline" onclick="resetBooking()" style="color:var(--navy);border-color:var(--navy);margin-top:12px">Réserver une autre séance</button>
-        `;
-                // Rediriger vers le paiement si Wave ou OM choisi
+               `;
+
+        // Rediriger vers le paiement si Wave ou OM choisi
         if (b.payment === 'wave') {
             setTimeout(() => {
-                window.open('https://pay.wave.com/m/M_sn__-wx4hCiTFSp/c/sn/', '_blank');
+                const payWindow = window.open('https://pay.wave.com/m/M_sn__-wx4hCiTFSp/c/sn/', '_blank');
+                if (!payWindow) {
+                    const link = document.createElement('a');
+                    link.href = 'https://pay.wave.com/m/M_sn__-wx4hCiTFSp/c/sn/';
+                    link.target = '_blank';
+                    link.textContent = '👉 Cliquez ici pour payer avec Wave';
+                    link.style.cssText = 'display:block;margin-top:12px;padding:12px;background:#ff9900;color:#fff;text-align:center;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.9rem';
+                    document.getElementById('bookingSuccess').appendChild(link);
+                }
             }, 2500);
         } else if (b.payment === 'om') {
             setTimeout(() => {
-                window.open('tel:*144%23', '_blank');
+                const payWindow = window.open('tel:*144%23', '_blank');
+                if (!payWindow) {
+                    const link = document.createElement('a');
+                    link.href = 'tel:*144%23';
+                    link.textContent = '📲 Appuyez pour payer avec Orange Money';
+                    link.style.cssText = 'display:block;margin-top:12px;padding:12px;background:#ff6600;color:#fff;text-align:center;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.9rem';
+                    document.getElementById('bookingSuccess').appendChild(link);
+                }
             }, 2500);
         }
 
