@@ -38,7 +38,8 @@
         #navbar.scrolled .burger span{background:var(--navy)}
         @media(max-width:768px){.nav-links{display:none}.burger{display:flex}}
 
-        #hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(160deg,#0a1929,#1a3a5c);padding:100px 20px}
+       #hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(160deg,#0a1929,#1a3a5c);padding:100px 20px;position:relative}
+.hero-bg-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.15}
         .hero-content{position:relative;z-index:2}
         .hero-tag{font-size:.75rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
         .hero-title{font-size:clamp(2.5rem,7vw,6rem);font-weight:400;color:#fff;line-height:1.1}
@@ -181,7 +182,7 @@
     </div>
 </nav>
 
-<section id="hero"><div class="hero-content"><p class="hero-tag">📍 Studio Professionnel · Thiès</p><h1 class="hero-title">Babos<br><em>Photography</em></h1><p class="hero-subtitle">Capturer l'instant. Révéler l'émotion.</p><div class="hero-buttons"><a href="#booking" class="btn btn-primary">📸 Réserver</a><a href="#gallery" class="btn btn-outline">🖼️ Galerie</a></div></div></section>
+<section id="hero"><div class="hero-bg-img" id="heroBgImg"></div><div class="hero-content"><p class="hero-tag" id="heroTagEl">📍 Studio Professionnel · Thiès</p><h1 class="hero-title">Babos<br><em>Photography</em></h1><p class="hero-subtitle">Capturer l'instant. Révéler l'émotion.</p><div class="hero-buttons"><a href="#booking" class="btn btn-primary">📸 Réserver</a><a href="#gallery" class="btn btn-outline">🖼️ Galerie</a></div></div></section>
 
 <section id="about" class="section"><div class="about-grid"><div class="about-img"><img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=600&q=80" alt="Studio"></div><div class="about-text"><p class="section-tag" style="text-align:left">Mon histoire</p><h2 class="section-title" style="text-align:left">La photographie est <em>une passion</em></h2><div class="section-line" style="margin:16px 0 24px"></div><p>Bienvenue chez Babos Photography. Photographe professionnel basé à Thiès, je suis spécialisé dans les portraits de studio, la photographie familiale et les shootings corporate.</p><div class="stats"><div class="stat"><span class="stat-num">8+</span><span class="stat-label">Années</span></div><div class="stat"><span class="stat-num">500+</span><span class="stat-label">Clients</span></div><div class="stat"><span class="stat-num">12k+</span><span class="stat-label">Photos</span></div></div></div></div></section>
 
@@ -561,7 +562,7 @@ function loadContentEditor(){
     document.getElementById('e-hours').value=c.hours||'';
 }
 function saveContent(){
-    localStorage.babos_config=JSON.stringify({
+    const config = {
         heroBg:document.getElementById('e-heroBg').value,
         heroLocation:document.getElementById('e-heroLocation').value,
         heroTagline:document.getElementById('e-heroTagline').value,
@@ -571,8 +572,36 @@ function saveContent(){
         email:document.getElementById('e-email').value,
         address:document.getElementById('e-address').value,
         hours:document.getElementById('e-hours').value
-    });
-    alert('✅ Sauvegardé !');
+    };
+    localStorage.babos_config = JSON.stringify(config);
+    
+    // Appliquer immédiatement les changements
+    if (config.heroBg) {
+        document.getElementById('heroBgImg').style.backgroundImage = `url('${config.heroBg}')`;
+    }
+    if (config.heroLocation) {
+        document.getElementById('heroTagEl').textContent = config.heroLocation;
+    }
+    if (config.heroTagline) {
+        document.querySelector('.hero-subtitle').textContent = config.heroTagline;
+    }
+    if (config.aboutText) {
+        document.querySelector('#about .about-text p').innerHTML = config.aboutText;
+    }
+    if (config.aboutImg) {
+        document.querySelector('#about .about-img img').src = config.aboutImg;
+    }
+    if (config.phone) {
+        document.querySelector('.contact-info div:nth-child(2) span').textContent = config.phone;
+    }
+    if (config.email) {
+        document.querySelector('.contact-info div:nth-child(3) span').textContent = config.email;
+    }
+    if (config.address) {
+        document.querySelector('.contact-info div:nth-child(1) span').textContent = config.address;
+    }
+    
+    alert('✅ Contenu sauvegardé et appliqué ! Rafraîchissez la page si besoin.');
 }
 
 // ============ PAIEMENT ============
