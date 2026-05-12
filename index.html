@@ -418,7 +418,41 @@ function renderPublicGallery() {
 
 // ============ BOOKING ============
 function selectPay(el){document.querySelectorAll('.payment-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected')}
-async function submitBooking(e){e.preventDefault();const b={name:document.getElementById('bName').value,phone:document.getElementById('bPhone').value,date:document.getElementById('bDate').value,type:document.getElementById('bType').value,payment:document.querySelector('input[name="payment"]:checked')?.value||'surplace',message:document.getElementById('bMsg').value,status:'Nouveau',createdAt:new Date().toISOString()};try{await db.collection('bookings').add(b);document.getElementById('bookingForm').style.display='none';document.getElementById('bookingSuccess').style.display='block';window.open(`https://wa.me/221771826735?text=${encodeURIComponent('Réservation: '+b.name+', Date: '+b.date)}`,'_blank')}catch(e){alert('Erreur.')}return false}
+async function submitBooking(e){
+    e.preventDefault();
+    const b = {
+        name: document.getElementById('bName').value,
+        phone: document.getElementById('bPhone').value,
+        date: document.getElementById('bDate').value,
+        type: document.getElementById('bType').value,
+        payment: document.querySelector('input[name="payment"]:checked')?.value || 'surplace',
+        message: document.getElementById('bMsg').value,
+        status: 'Nouveau',
+        createdAt: new Date().toISOString()
+    };
+    try {
+        await db.collection('bookings').add(b);
+        document.getElementById('bookingForm').style.display = 'none';
+        document.getElementById('bookingSuccess').style.display = 'block';
+        
+        // Message WhatsApp amélioré
+        const waMsg = encodeURIComponent(
+            '📸 *NOUVELLE RÉSERVATION - BABOS PHOTOGRAPHY*\n\n' +
+            '👤 *Client :* ' + b.name + '\n' +
+            '📞 *Téléphone :* ' + b.phone + '\n' +
+            '📅 *Date :* ' + b.date + '\n' +
+            '🎯 *Type :* ' + b.type + '\n' +
+            '💳 *Paiement :* ' + (b.payment === 'wave' ? 'Wave 📱' : b.payment === 'om' ? 'Orange Money 📲' : 'Sur place 💵') + '\n' +
+            '💬 *Message :* ' + (b.message || 'Aucun') + '\n\n' +
+            '✅ *Merci de confirmer rapidement.*'
+        );
+        window.open('https://wa.me/221771826735?text=' + waMsg, '_blank');
+        
+    } catch(e) {
+        alert('Erreur. Réessayez.');
+    }
+    return false;
+}
 function resetBooking(){document.getElementById('bookingForm').style.display='block';document.getElementById('bookingForm').reset();document.getElementById('bookingSuccess').style.display='none';document.querySelector('.payment-opt').classList.add('selected')}
 async function copyPhone(){
     let phoneNumber = '221771826735';
